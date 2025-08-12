@@ -1,9 +1,30 @@
-import React from 'react'
+import React from 'react';
+import './Post.css';
 
-const Post = () => {
+// Import asset images (update paths as needed)
+import heartIcon from '../assets/heart.png';
+import commentIcon from '../assets/comment.png';
+import shareIcon from '../assets/share.png';
+import uploadIcon from '../assets/upload.png';
+import musicIcon from '../assets/music.png';
+import botIcon from '../assets/bot.png';
+import profileAvatar from '../assets/profile.png';
+import backgroundImg from '../assets/post.png';
+
+function Post() {
   return (
-    <div>Post</div>
+   <div className='Post_Page'>
+    <Header/>
+   </div>
+  );
+}
+function Header()
+{
+  return(
+   <div className="Header">
+     Header
+   </div>
   )
 }
 
-export default Post
+export default Post;

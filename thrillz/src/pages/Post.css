@@ -1,0 +1,9 @@
+.Post_Page {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../assets/post.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+}
