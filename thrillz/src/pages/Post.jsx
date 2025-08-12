@@ -23,9 +23,20 @@ function Header()
   return(
    <div className="Header">
        <img src={profileAvatar} alt="Profile Avatar" className="profile"/>
+       <div className="right">
        <img src={musicIcon} alt="Music" className="music"/>
-     
+       <Explore/>
+       </div>
    </div>
+  )
+}
+
+function Explore()
+{
+  return(
+    <div className="explore">
+      <div className="explore_text">Explore Map</div>
+      </div>
   )
 }
 
