@@ -25,6 +25,9 @@ function Header() {
   function handleClick() {
     navigate("/profile");
   }
+  function handleClickBot() {
+    navigate("/chatbot");
+  }
   return (
     <div className="Header">
       <img src={profileAvatar} alt="Profile Avatar" className="profile"  onClick={handleClick}/>
@@ -33,7 +36,7 @@ function Header() {
         <Explore />
       </div>
       <div className="bottom">
-         <img src={botIcon} alt="Bot" className="bot" />
+         <img src={botIcon} alt="Bot" className="bot"  onClick={handleClickBot} />
       </div>
     </div>
   );
