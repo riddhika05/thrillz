@@ -7,3 +7,22 @@
   background-position: center;
   min-height: 100vh;
 }
+.Header
+{
+   top:0;
+   left: 0;
+   padding:30px;
+   position: sticky;
+   display: flex;
+   align-items: center; 
+}
+.profile
+{
+    height: 4rem;
+    width: 4rem;
+}
+.music
+{
+    height: 7rem;
+    margin-left: auto;
+}

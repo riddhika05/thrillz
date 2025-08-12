@@ -22,7 +22,9 @@ function Header()
 {
   return(
    <div className="Header">
-     Header
+       <img src={profileAvatar} alt="Profile Avatar" className="profile"/>
+       <img src={musicIcon} alt="Music" className="music"/>
+     
    </div>
   )
 }
