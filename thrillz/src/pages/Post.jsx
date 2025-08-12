@@ -20,9 +20,14 @@ function Post() {
   );
 }
 function Header() {
+  const navigate = useNavigate();
+
+  function handleClick() {
+    navigate("/profile");
+  }
   return (
     <div className="Header">
-      <img src={profileAvatar} alt="Profile Avatar" className="profile" />
+      <img src={profileAvatar} alt="Profile Avatar" className="profile"  onClick={handleClick}/>
       <div className="right">
         <img src={musicIcon} alt="Music" className="music" />
         <Explore />
