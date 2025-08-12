@@ -32,6 +32,9 @@ function Header() {
         <img src={musicIcon} alt="Music" className="music" />
         <Explore />
       </div>
+      <div className="bottom">
+         <img src={botIcon} alt="Bot" className="bot" />
+      </div>
     </div>
   );
 }

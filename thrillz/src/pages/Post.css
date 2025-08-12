@@ -50,3 +50,14 @@
    gap:5rem;
    color:#5a4fcf;
 }
+.bottom {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+}
+
+.bot {
+  height: 4rem;
+  width: 4rem;
+}
