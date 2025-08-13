@@ -9,7 +9,7 @@ import uploadIcon from "../assets/upload.png";
 import musicIcon from "../assets/music.png";
 import botIcon from "../assets/bot.png";
 import profileAvatar from "../assets/profile.png";
-import backgroundImg from "../assets/post.png";
+import Whispers from "./Whispers";
 import { useNavigate } from "react-router-dom";
 
 function Post() {
@@ -29,16 +29,21 @@ function Header() {
     navigate("/chatbot");
   }
   return (
-    <div className="Header">
+    <>
+    <div className="Header"> 
       <img src={profileAvatar} alt="Profile Avatar" className="profile"  onClick={handleClick}/>
       <div className="right">
         <img src={musicIcon} alt="Music" className="music" />
         <Explore />
       </div>
+    </div>
+      <div className="WhisperContainer">
+        <Whispers/>
+      </div>
       <div className="bottom">
          <img src={botIcon} alt="Bot" className="bot"  onClick={handleClickBot} />
       </div>
-    </div>
+   </>
   );
 }
 
