@@ -1,3 +1,4 @@
+import "./Whisper.css"
 const Whisper = ({ whisper }) => {
   const user = whisper.users; // comes from the join
 

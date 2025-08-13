@@ -28,7 +28,7 @@ const Whispers = () => {
   if (!whispers.length) return <div>Loading whispers...</div>;
 
   return (
-    <ul>
+    <ul style={{ listStyleType: "none" }}>
       {whispers.map((w) => (
         <li key={w.id}><Whisper whisper={w} /></li> 
       ))}
