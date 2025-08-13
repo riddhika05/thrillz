@@ -8,7 +8,13 @@ const Whispers = () => {
 
   useEffect(() => {
     async function fetchWhispers() {
-      const { data, error } = await supabase.from('Whispers').select('*');
+      const { data, error } = await supabase.from('Whispers').select(`
+    id,
+    content,
+    user_id,
+    users:user_id (username, gmail, profilepic)
+  `);
+   console.log("Full response:", { data, error });
       if (error) {
         setError(error.message);
       } else {
