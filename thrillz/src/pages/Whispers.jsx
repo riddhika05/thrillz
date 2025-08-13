@@ -1,6 +1,7 @@
 import React from 'react'
 import {supabase} from "../supabaseClient"
 import { useState,useEffect } from 'react'
+import Whisper from "./Whisper"
 const Whispers = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
@@ -23,7 +24,7 @@ const Whispers = () => {
   return (
     <ul>
       {whispers.map((w) => (
-        <li key={w.id}>{w.content}</li> 
+        <li key={w.id}><Whisper whisper={w} /></li> 
       ))}
     </ul>
   );
