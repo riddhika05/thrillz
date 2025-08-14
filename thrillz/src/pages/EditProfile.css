@@ -8,3 +8,18 @@
   font-family: monospace;
   position: relative;
 }
+
+.logout-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 6px;
+  padding: 7px 20px;
+  color: #fff;
+  font-size: 18px;
+  font-family: monospace;
+  cursor: pointer;
+  border: none;
+}
+
