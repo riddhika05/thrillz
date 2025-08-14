@@ -75,7 +75,31 @@ const EditProfile = () => {
             onChange={e => setTriggerWordInput(e.target.value)}
             placeholder="Trigger word"
           />
-          
+          <button type="button" style={styles.addTriggerButton} onClick={handleAddTriggerWord}>+</button>
+        </div>
+        <div style={styles.profanitySection}>
+          <span style={styles.label}>profanity</span>
+          {/* Custom Toggle */}
+          <div
+            role="switch"
+            aria-checked={profanity}
+            style={{
+              ...styles.toggle,
+              ...(profanity ? styles.toggleActive : {})
+            }}
+            onClick={handleToggleProfanity}
+            tabIndex={0}
+          >
+            <div style={{
+              ...styles.toggleKnob,
+              ...(profanity ? styles.toggleKnobActive : {})
+            }} />
+          </div>
+        </div>
+        
+
+
+       
       
   )
 }
