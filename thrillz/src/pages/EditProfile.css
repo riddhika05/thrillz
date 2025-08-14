@@ -39,3 +39,20 @@
   font-size: 48px;
 }
 
+.plus-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: #4d90fe;
+  border: 2px solid #ddd;
+  font-size: 24px;
+  cursor: pointer;
+}
