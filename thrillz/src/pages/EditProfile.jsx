@@ -15,6 +15,14 @@ const EditProfile = () => {
     }
   };
 
+  const handleToggleProfanity = () => setProfanity(!profanity);
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    // Do actual save logic here
+    alert('Changes Saved!');
+  };
+
   
   
 
