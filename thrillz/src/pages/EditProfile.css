@@ -75,3 +75,19 @@
   font-family: monospace;
 }
 
+.edit-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Trigger words section */
+.trigger-words-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
