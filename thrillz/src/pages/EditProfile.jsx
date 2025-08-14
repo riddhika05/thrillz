@@ -96,11 +96,15 @@ const EditProfile = () => {
             }} />
           </div>
         </div>
-        
 
-
-       
-      
+        <button
+          type="submit"
+          style={styles.saveButton}
+        >
+          Save Changes
+        </button>
+      </form>
+    </div>    
   )
 }
 
