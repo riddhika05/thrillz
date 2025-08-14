@@ -3,7 +3,7 @@ const Whisper = ({ whisper }) => {
   const user = whisper.users; // comes from the join
 
   return (
-    <div className="Whisper">
+    <div className="Whisper bg-white rounded-xl shadow-md overflow-hidden p-6">
       <div className="topbar">
         {console.log({user})}
         {user && (
@@ -14,7 +14,7 @@ const Whisper = ({ whisper }) => {
           </>
         )}
       </div>
-      <div>{whisper.content}</div>
+      <div className="text-[10px]">{whisper.content}</div>
     </div>
   );
 };
