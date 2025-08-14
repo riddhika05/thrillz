@@ -56,3 +56,22 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+.edit-profile-form {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 32px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 350px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.09);
+}
+
+.edit-label {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 4px;
+  font-family: monospace;
+}
+
