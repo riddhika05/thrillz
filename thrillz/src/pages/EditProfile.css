@@ -91,3 +91,25 @@
   flex-wrap: wrap;
 }
 
+.trigger-word {
+  background: #fff;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+}
+
+.add-trigger-btn {
+  background: #4d90fe;
+  color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
