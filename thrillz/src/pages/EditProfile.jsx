@@ -47,6 +47,23 @@ const EditProfile = () => {
           onChange={e => setNickname(e.target.value)}
           placeholder="Enter nickname"
         />
+        <label style={styles.label}>e-mail</label>
+        <input
+          style={styles.input}
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          placeholder="Enter e-mail"
+        />
+        <label style={styles.label}>Change password</label>
+        <input
+          style={styles.input}
+          type="password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          placeholder="New password"
+        />
+        
       
   )
 }
