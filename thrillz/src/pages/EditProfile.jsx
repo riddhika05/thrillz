@@ -8,6 +8,16 @@ const EditProfile = () => {
   const [triggerWords, setTriggerWords] = useState([]);
   const [profanity, setProfanity] = useState(true);
   
+  const handleAddTriggerWord = () => {
+    if (triggerWordInput.trim() && !triggerWords.includes(triggerWordInput.trim())) {
+      setTriggerWords([...triggerWords, triggerWordInput.trim()]);
+      setTriggerWordInput('');
+    }
+  };
+
+  
+  
+
   return (
     <div>EditProfile</div>
   )
