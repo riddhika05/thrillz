@@ -63,7 +63,19 @@ const EditProfile = () => {
           onChange={e => setPassword(e.target.value)}
           placeholder="New password"
         />
-        
+        <label style={styles.label}>Enter your trigger words</label>
+        <div style={styles.triggerWordsSection}>
+          {triggerWords.map((word, idx) => (
+            <span key={idx} style={styles.triggerWord}>{word}</span>
+          ))}
+          <input
+            style={styles.input}
+            type="text"
+            value={triggerWordInput}
+            onChange={e => setTriggerWordInput(e.target.value)}
+            placeholder="Trigger word"
+          />
+          
       
   )
 }
