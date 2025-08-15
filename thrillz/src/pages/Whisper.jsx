@@ -18,7 +18,7 @@ const Whisper = ({ whisper }) => {
               alt={user.username}
               className="w-10 h-10 rounded-full border-2 border-pink-300"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col bg-pink-80">
               <span className="text-pink-800 font-semibold text-sm">{user.username}</span>
               <span className="text-pink-500 text-xs">{user.gmail}</span>
             </div>
@@ -31,13 +31,22 @@ const Whisper = ({ whisper }) => {
         {whisper.content}
       </div>
 
-      {/* Icon bar - optional */}
-       <div className="absolute left-8  flex gap-8">
-        <button className="text-pink-400 text-lg hover:scale-110 transition-transform">{/* ♥️ */}♥️</button>
-        <button className="text-pink-400 text-lg hover:scale-110 transition-transform">{/* 💬 */}💬</button>
-        <button className="text-pink-400 text-lg hover:scale-110 transition-transform">{/* 🔗 */}🔗</button>
-        <button className="text-pink-400 text-lg hover:scale-110 transition-transform">{/* ⬇️ */}⬇️</button>
+      
+      <div className="flex gap-8 bg-pink-400 rounded-2xl px-6 py-3 mt-6 justify-center shadow-lg">
+        <button className="text-pink-800 text-lg hover:scale-110 transition-transform">
+          <img src={heartIcon} alt="Like" className="w-6 h-6 inline" />
+        </button>
+        <button className="text-pink-800 text-lg hover:scale-110 transition-transform">
+          <img src={commentIcon} alt="Comment" className="w-6 h-6 inline" />
+        </button>
+        <button className="text-pink-800 text-lg hover:scale-110 transition-transform">
+          <img src={shareIcon} alt="Share" className="w-6 h-6 inline" />
+        </button>
+        <button className="text-pink-800 text-lg hover:scale-110 transition-transform">
+          <img src={uploadIcon} alt="Upload" className="w-6 h-6 inline" />
+        </button>
       </div>
+
     </div>
       </>
   );

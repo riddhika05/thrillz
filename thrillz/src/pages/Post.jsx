@@ -39,9 +39,9 @@ function Header() {
         </div>
       </div>
     
-      <div className="w-full sm:w-3/4 lg:w-1/2 h-[30rem] mx-auto mt-12">
-        <Whispers />
-      </div>
+      <div className="w-full sm:w-3/4 lg:w-1/2 mx-auto mt-12 max-h-[70vh] overflow-y-auto">
+       <Whispers />
+     </div>
       <div className="fixed bottom-8 right-8 z-50">
        
         <img src={botIcon} alt="Bot" className="h-16 w-16 md:h-20 md:w-20 cursor-pointer" onClick={handleClickBot} />
