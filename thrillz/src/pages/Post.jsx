@@ -1,47 +1,50 @@
 import React from "react";
-import "./Post.css";
-
-// Import asset images (update paths as needed)
-import heartIcon from "../assets/heart.png";
-import commentIcon from "../assets/comment.png";
-import shareIcon from "../assets/share.png";
-import uploadIcon from "../assets/upload.png";
 import musicIcon from "../assets/music.png";
 import botIcon from "../assets/bot.png";
 import profileAvatar from "../assets/profile.png";
 import Whispers from "./Whispers"
 import { useNavigate } from "react-router-dom";
-
+import postBackground from '../assets/post.png'; 
 function Post() {
   return (
-    <div className="Post_Page">
+  
+    <div className="w-screen bg-cover bg-no-repeat bg-center bg-fixed min-h-screen m-0" style={{ backgroundImage: `url(${postBackground})` }}>
       <Header />
     </div>
   );
 }
+
 function Header() {
   const navigate = useNavigate();
 
   function handleClick() {
     navigate("/profile");
   }
+
   function handleClickBot() {
     navigate("/chatbot");
   }
+
   return (
     <>
-    <div className="Header">
-      <img src={profileAvatar} alt="Profile Avatar" className="profile"  onClick={handleClick}/>
-      <div className="right">
-        <img src={musicIcon} alt="Music" className="music" />
-        <Explore />
+      
+      <div className="sticky top-0 left-0 p-8 flex items-center z-10">
+      
+        <img src={profileAvatar} alt="Profile Avatar" className="h-16 w-16 md:h-20 md:w-20 cursor-pointer" onClick={handleClick} />
+        
+        <div className="ml-auto flex items-center gap-20 text-[#5a4fcf]">
+        
+          <img src={musicIcon} alt="Music" className="h-28 md:h-32" />
+          <Explore />
+        </div>
       </div>
-    </div>
-      <div className="WhisperContainer">
-        <Whispers/>
+    
+      <div className="w-full sm:w-3/4 lg:w-1/2 h-[30rem] mx-auto mt-12">
+        <Whispers />
       </div>
-      <div className="bottom">
-         <img src={botIcon} alt="Bot" className="bot"  onClick={handleClickBot} />
+      <div className="fixed bottom-8 right-8 z-50">
+       
+        <img src={botIcon} alt="Bot" className="h-16 w-16 md:h-20 md:w-20 cursor-pointer" onClick={handleClickBot} />
       </div>
     </>
   );
@@ -53,9 +56,12 @@ function Explore() {
   function handleClick() {
     navigate("/explore");
   }
+  
   return (
-    <div className="explore" onClick={handleClick}>
-      <div className="explore_text">Explore Map</div>
+    
+    <div className="w-40 h-20 bg-[#D9D9D9] rounded-[40px] flex cursor-pointer" onClick={handleClick}>
+
+      <div className="relative left-8 top-6 font-['Pacifico'] font-normal not-italic">Explore Map</div>
     </div>
   );
 }
