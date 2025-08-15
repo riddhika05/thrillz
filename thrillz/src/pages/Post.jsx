@@ -1,7 +1,7 @@
 import React from "react";
 import musicIcon from "../assets/music.png";
 import botIcon from "../assets/bot.png";
-import profileAvatar from "../assets/profile.png";
+import profileAvatar from "../assets/girl.png";
 import Whispers from "./Whispers";
 import { useNavigate } from "react-router-dom";
 import postBackground from "../assets/post.png";
