@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <section className="home-container">
       <div className="overlay"></div>
-      <h1 className="title">Whisper Walls</h1>
+      <h1 className="text-[10px]">Whisper Walls</h1>
       <p className="subtitle">Where whispers shape hearts...</p>
       <div className="left-copy">
         <div>WANDER,</div>

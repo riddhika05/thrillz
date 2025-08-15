@@ -1,4 +1,6 @@
 import React from 'react'
+import {useState} from 'react';
+
 import './EditProfile.css';
 
 const EditProfile = () => {
@@ -31,82 +33,89 @@ const EditProfile = () => {
   
 
   return (
-    <div style={styles.container}>
-      <button style={styles.logout} onClick={handleLogout}>
+    <div className="edit-profile-container">
+      <button className="logout-btn" onClick={handleLogout}>
         {'->'} log out
       </button>
-      <div style={styles.avatarContainer}>
-        <div style={styles.avatar}>👤</div>
-        <div style={styles.plusIcon}>+</div>
+
+      <div className="avatar-container">
+        <div className="avatar">👤</div>
+        <div className="plus-icon">+</div>
       </div>
-      <form style={styles.form} onSubmit={handleSave}>
-        <label style={styles.label}>Change nickname</label>
+
+      <form className="edit-profile-form" onSubmit={handleSave}>
+        <label className="edit-label">Change nickname</label>
         <input
-          style={styles.input}
+          className="edit-input"
           type="text"
           value={nickname}
           onChange={e => setNickname(e.target.value)}
           placeholder="Enter nickname"
         />
-        <label style={styles.label}>e-mail</label>
+
+        <label className="edit-label">e-mail</label>
         <input
-          style={styles.input}
+          className="edit-input"
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
           placeholder="Enter e-mail"
         />
-        <label style={styles.label}>Change password</label>
+
+        <label className="edit-label">Change password</label>
         <input
-          style={styles.input}
+          className="edit-input"
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           placeholder="New password"
         />
-        <label style={styles.label}>Enter your trigger words</label>
-        <div style={styles.triggerWordsSection}>
+
+        <label className="edit-label">Enter your trigger words</label>
+        <div className="trigger-words-section">
           {triggerWords.map((word, idx) => (
-            <span key={idx} style={styles.triggerWord}>{word}</span>
+            <span key={idx} className="trigger-word">{word}</span>
           ))}
           <input
-            style={styles.input}
+            className="edit-input"
             type="text"
             value={triggerWordInput}
             onChange={e => setTriggerWordInput(e.target.value)}
             placeholder="Trigger word"
           />
-          <button type="button" style={styles.addTriggerButton} onClick={handleAddTriggerWord}>+</button>
+          <button
+            type="button"
+            className="add-trigger-btn"
+            onClick={handleAddTriggerWord}
+          >
+            +
+          </button>
         </div>
-        <div style={styles.profanitySection}>
-          <span style={styles.label}>profanity</span>
-          {/* Custom Toggle */}
+
+        <div className="profanity-section">
+          <span className="edit-label">profanity</span>
           <div
             role="switch"
             aria-checked={profanity}
-            style={{
-              ...styles.toggle,
-              ...(profanity ? styles.toggleActive : {})
-            }}
+            className={`toggle ${profanity ? 'active' : ''}`}
             onClick={handleToggleProfanity}
             tabIndex={0}
           >
-            <div style={{
-              ...styles.toggleKnob,
-              ...(profanity ? styles.toggleKnobActive : {})
-            }} />
+            <div
+              className={`toggle-knob ${profanity ? 'active' : ''}`}
+            />
           </div>
         </div>
 
         <button
           type="submit"
-          style={styles.saveButton}
+          className="save-btn"
         >
           Save Changes
         </button>
       </form>
     </div>    
-  )
+  );
 }
 
 export default EditProfile
