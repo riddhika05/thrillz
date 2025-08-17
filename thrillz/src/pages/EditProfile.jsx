@@ -1,7 +1,7 @@
 
 import React from 'react'
 import  { useState } from 'react';
-
+import girl from "../assets/girl.png";
 import './EditProfile.css';
 
 const EditProfile = () => {
@@ -68,7 +68,7 @@ const EditProfile = () => {
 
       <div className="avatar-container">
         <div className="avatar">
-           <img src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=GraphicShirt&clotheColor=PastelBlue&graphicType=SkullOutline&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+           <img  src={girl} 
       alt="User Avatar"
       style={{ width: '100%', height: '100%', borderRadius: '50%' }} /> 
         </div>
