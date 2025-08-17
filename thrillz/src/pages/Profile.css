@@ -1,29 +1,6 @@
-body {
-  width: 100%;
-  min-height: 100%; /* ✅ ensures full height but allows more */
-  background-image: url('../assets/profile_bkg.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  margin: 0;
-  padding: 30px;
-  box-sizing: border-box;
-  color: #fff;
-}
 
 /* Top bar */
-.top-bar {
-  display: flex;
-  justify-content: space-between; 
-  align-items: center;
-  padding: 8px;
-  position: absolute;
 
-  left: 0;
-  right: 0;
-  background: transparent;
-}
 
 .icon {
   font-size: 30px;
