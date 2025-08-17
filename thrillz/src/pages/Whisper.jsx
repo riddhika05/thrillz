@@ -1,21 +1,66 @@
-import "./Whisper.css"
-const Whisper = ({ whisper }) => {
-  const user = whisper.users; // comes from the join
+"use client";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import heartIcon from "../assets/heart.png";
+import commentIcon from "../assets/comment.png";
+import shareIcon from "../assets/share.png";
+import uploadIcon from "../assets/upload.png";
+
+const Whisper = ({ whisper, containerRef }) => {
+  const user = whisper.users;
+  const ref = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    container: containerRef,
+    offset: ["start end", "center center"],
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.1, 0.85]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1, 0.5]);
 
   return (
-    <div className="Whisper bg-white rounded-xl shadow-md overflow-hidden p-6">
-      <div className="topbar">
-        {console.log({user})}
+    <motion.div
+      ref={ref}
+      style={{ scale, opacity }}
+      className="relative w-11/12 max-w-lg mx-auto rounded-3xl shadow-lg bg-pink-100 py-4 px-6 sm:py-6 sm:px-8 mb-16 sm:mb-20 transition-all duration-300"
+      initial={{ scale: 0.85, opacity: 0.5 }}
+      whileInView={{ scale: 1.1, opacity: 1 }}
+      viewport={{ once: false, amount: 0.2}}
+      transition={{ type: "spring", bounce: 0.4 }}
+    >
+      <div className="flex items-center gap-3 pb-2">
         {user && (
           <>
-            <img src={user.profilepic} alt={user.username} width={40} height={40} />
-            <span>{user.username}</span>
-            <span>{user.gmail}</span>
+            <img
+              src={user.profilepic}
+              alt={user.username}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-pink-300"
+            />
+            <div className="flex flex-col">
+              <span className="text-pink-800 font-semibold text-xs sm:text-sm">
+                {user.username}
+              </span>
+              <span className="text-pink-500 text-[10px] sm:text-xs">{user.gmail}</span>
+            </div>
           </>
         )}
       </div>
-      <div className="text-[10px]">{whisper.content}</div>
-    </div>
+      <div className="mt-2 font-[cursive] text-sm sm:text-[16px] text-[#784552] leading-6">
+        {whisper.content}
+      </div>
+      <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
+        {[heartIcon, commentIcon, shareIcon, uploadIcon].map((icon, idx) => (
+          <button
+            key={idx}
+            className="hover:scale-110 transition-transform"
+          >
+            <img src={icon} alt="Icon" className="w-5 h-5 sm:w-6 sm:h-6" />
+          </button>
+        ))}
+      </div>
+    </motion.div>
   );
 };
+
 export default Whisper;
