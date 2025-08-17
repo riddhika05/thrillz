@@ -1,6 +1,4 @@
-import React from 'react'
-import {useState} from 'react';
-
+import React, { useState } from 'react';
 import './EditProfile.css';
 
 const EditProfile = () => {
@@ -10,12 +8,17 @@ const EditProfile = () => {
   const [triggerWordInput, setTriggerWordInput] = useState('');
   const [triggerWords, setTriggerWords] = useState([]);
   const [profanity, setProfanity] = useState(true);
-  
+  const [avatarPreview, setAvatarPreview] = useState(null);
+
   const handleAddTriggerWord = () => {
     if (triggerWordInput.trim() && !triggerWords.includes(triggerWordInput.trim())) {
       setTriggerWords([...triggerWords, triggerWordInput.trim()]);
       setTriggerWordInput('');
     }
+  };
+
+  const handleRemoveTriggerWord = (wordToRemove) => {
+    setTriggerWords(triggerWords.filter(word => word !== wordToRemove));
   };
 
   const handleToggleProfanity = () => setProfanity(!profanity);
@@ -30,53 +33,100 @@ const EditProfile = () => {
     // Implement logout logic
     alert('Logged Out');
   };
-  
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setAvatarPreview(url);
+      // Additional upload logic if needed
+    }
+  };
 
   return (
     <div className="edit-profile-container">
-      <button className="logout-btn" onClick={handleLogout}>
-        {'->'} log out
+       <button className="logout-btn-gradient" onClick={handleLogout}>
+        <span className="logout-btn-icon">
+          {/* Logout/Door SVG Icon */}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M7 12h7m0 0-3-3m3 3-3 3m7-10v14c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2z"
+        stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+</svg>
+
+        </span>
+        <span className="logout-btn-text">LOG-OUT</span>
+        <span className="logout-btn-arrow">
+          {/* Right Arrow SVG Icon */}
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M10 18l6-6-6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </span>
       </button>
 
       <div className="avatar-container">
-        <div className="avatar">👤</div>
-        <div className="plus-icon">+</div>
+        <div className="avatar">
+           <img src="https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortCurly&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=GraphicShirt&clotheColor=PastelBlue&graphicType=SkullOutline&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light"
+      alt="User Avatar"
+      style={{ width: '100%', height: '100%', borderRadius: '50%' }} /> 
+        </div>
+        <div 
+          className="plus-icon" 
+          onClick={() => document.getElementById('avatar-upload').click()}
+          style={{ cursor: 'pointer' }}
+          title="Change profile picture"
+        >
+          +
+        </div>
+        <input
+          type="file"
+          accept="image/*"
+          id="avatar-upload"
+          style={{ display: 'none' }}
+          onChange={handleAvatarChange}
+        />
       </div>
 
       <form className="edit-profile-form" onSubmit={handleSave}>
-        <label className="edit-label">Change nickname</label>
-        <input
-          className="edit-input"
-          type="text"
-          value={nickname}
-          onChange={e => setNickname(e.target.value)}
-          placeholder="Enter nickname"
-        />
-
-        <label className="edit-label">e-mail</label>
-        <input
-          className="edit-input"
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="Enter e-mail"
-        />
-
-        <label className="edit-label">Change password</label>
-        <input
-          className="edit-input"
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="New password"
-        />
-
-        <label className="edit-label">Enter your trigger words</label>
-        <div className="trigger-words-section">
-          {triggerWords.map((word, idx) => (
-            <span key={idx} className="trigger-word">{word}</span>
-          ))}
+        <div className="form-row">
+          <label className="edit-label" htmlFor="nickname">Change nickname</label>
           <input
+            className="edit-input"
+            type="text"
+            id="nickname"
+            value={nickname}
+            onChange={e => setNickname(e.target.value)}
+            placeholder="Enter nickname"
+          />
+        </div>
+
+        <div className="form-row">
+          <label className="edit-label" htmlFor="email">E-mail</label>
+          <input
+            className="edit-input"
+            type="email"
+            id="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Enter e-mail"
+          />
+        </div>
+
+        <div className="form-row">
+          <label className="edit-label" htmlFor="password">Change password</label>
+          <input
+            className="edit-input"
+            type="password"
+            id="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="New password"
+          />
+        </div>
+
+        <div className="form-row">
+          <label className="edit-label" htmlFor="triggerWordInput">Trigger words</label>
+          <input
+            id="triggerWordInput"
             className="edit-input"
             type="text"
             value={triggerWordInput}
@@ -91,19 +141,51 @@ const EditProfile = () => {
             +
           </button>
         </div>
+        <div className="trigger-words-section" id="triggerWords">
+          {triggerWords.map((word, idx) => (
+            <span 
+              key={idx} 
+              className="trigger-word"
+              style={{ display: 'flex', alignItems: 'center', marginRight: '7px' }}
+            >
+              {word}
+              <button
+                type="button"
+                style={{
+                  marginLeft: '6px',
+                  background: 'none',
+                  border: 'none',
+                  color: '#fff',
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  lineHeight: '1',
+                }}
+                title="Remove trigger word"
+                onClick={() => handleRemoveTriggerWord(word)}
+              >
+                &times;
+              </button>
+            </span>
+          ))}
+        </div>
 
-        <div className="profanity-section">
-          <span className="edit-label">profanity</span>
+        <div className="form-row">
+          <label className="edit-label" htmlFor="profanity-toggle">Profanity</label>
           <div
+            id="profanity-toggle"
             role="switch"
             aria-checked={profanity}
             className={`toggle ${profanity ? 'active' : ''}`}
             onClick={handleToggleProfanity}
             tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleToggleProfanity();
+              }
+            }}
           >
-            <div
-              className={`toggle-knob ${profanity ? 'active' : ''}`}
-            />
+            <div className={`toggle-knob ${profanity ? 'active' : ''}`} />
           </div>
         </div>
 
@@ -114,8 +196,8 @@ const EditProfile = () => {
           Save Changes
         </button>
       </form>
-    </div>    
+    </div>
   );
-}
+};
 
-export default EditProfile
+export default EditProfile;
