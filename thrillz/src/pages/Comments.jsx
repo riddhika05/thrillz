@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
 import musicIcon from "../assets/music.png";
 import profileAvatar from "../assets/girl.png";
 import chatbkg from "../assets/profile_bkg.png";
 
 const Chat = () => {
   const navigate = useNavigate();
+  const location = useLocation(); // Get location object
+  const { whisper } = location.state || {}; // Extract whisper from state
 
   // Example comments state
   const [comments, setComments] = useState([
@@ -35,6 +37,39 @@ const Chat = () => {
   const handleClick = () => navigate("/profile");
   const handleClickBot = () => navigate("/chatbot");
   const handleExploreClick = () => navigate("/explore");
+
+  // Conditional rendering for the post
+  const PostCard = () => {
+    if (!whisper) {
+      return (
+        <div className="mx-auto mt-6 w-[90%] sm:w-[70%] md:w-[50%] bg-white/80 rounded-2xl p-4 shadow-md text-center text-gray-700">
+          No post selected.
+        </div>
+      );
+    }
+    return (
+      <div className="mx-auto mt-6 w-[90%] sm:w-[70%] md:w-[50%] bg-white/80 rounded-2xl p-4 shadow-md">
+        <div className="flex items-center gap-3">
+          <img
+            src={whisper.users.profilepic}
+            alt="Profile"
+            className="h-10 w-10 rounded-full"
+          />
+          <div>
+            <div className="font-semibold text-pink-500">
+              {whisper.users.username}
+            </div>
+            <div className="text-sm text-gray-600">
+              {whisper.users.gmail}
+            </div>
+          </div>
+        </div>
+        <p className="mt-4 italic font-semibold text-gray-700">
+          {whisper.content}
+        </p>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -72,30 +107,15 @@ const Chat = () => {
         </div>
       </div>
 
-      {/* Post Card */}
-      <div className="mx-auto mt-6 w-[90%] sm:w-[70%] md:w-[50%] bg-white/80 rounded-2xl p-4 shadow-md">
-        <div className="flex items-center gap-3">
-          <img
-            src={profileAvatar}
-            alt="Profile"
-            className="h-10 w-10 rounded-full"
-          />
-          <div>
-            <div className="font-semibold text-pink-500">profile name</div>
-            <div className="text-sm text-gray-600">hello@gmail.com</div>
-          </div>
-        </div>
-        <p className="mt-4 italic font-semibold text-gray-700">
-          A thousand windows, yet silence echoes louder than words - Hawa Mahal
-        </p>
-      </div>
+      {/* Dynamic Post Card */}
+      <PostCard />
 
       {/* Comments Section */}
       <div className="mx-auto mt-6 w-[90%] sm:w-[70%] md:w-[50%] bg-gray-200/50 backdrop-blur-sm rounded-2xl p-4 shadow-md">
         <h3 className="font-bold text-lg mb-3">Comments</h3>
 
         {/* Scrollable container */}
-        <div className="max-h-100 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-pink-300 scrollbar-track-transparent">
+        <div className="max-h-100 overflow-y-auto pr-2 hide-scrollbar">
           {comments.map((c) => (
             <div key={c.id} className="flex items-start gap-3 mb-4">
               <img src={profileAvatar} alt="Comment" className="h-8 w-8 rounded-full" />

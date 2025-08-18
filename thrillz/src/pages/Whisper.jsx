@@ -5,7 +5,7 @@ import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
 import shareIcon from "../assets/share.png";
 import uploadIcon from "../assets/upload.png";
-
+import { useNavigate } from "react-router-dom";
 const Whisper = ({ whisper, containerRef }) => {
   const user = whisper.users;
   const ref = useRef(null);
@@ -15,9 +15,14 @@ const Whisper = ({ whisper, containerRef }) => {
     container: containerRef,
     offset: ["start end", "center center"],
   });
-
+  
+  const navigate=useNavigate();
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.1, 0.85]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1, 0.5]);
+  
+  const handleCommentClick = () => {
+    navigate("/comments", { state: { whisper } }); // Pass the whisper object in state
+  };
 
   return (
     <motion.div
@@ -50,14 +55,25 @@ const Whisper = ({ whisper, containerRef }) => {
         {whisper.content}
       </div>
       <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
-        {[heartIcon, commentIcon, shareIcon, uploadIcon].map((icon, idx) => (
-          <button
-            key={idx}
-            className="hover:scale-110 transition-transform"
-          >
-            <img src={icon} alt="Icon" className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-        ))}
+        <button className="hover:scale-110 transition-transform">
+          <img src={heartIcon} alt="Heart" className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+        <button
+          onClick={handleCommentClick} // Add the click handler here
+          className="hover:scale-110 transition-transform"
+        >
+          <img
+            src={commentIcon}
+            alt="Comment"
+            className="w-5 h-5 sm:w-6 sm:h-6"
+          />
+        </button>
+        <button className="hover:scale-110 transition-transform">
+          <img src={shareIcon} alt="Share" className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
+        <button className="hover:scale-110 transition-transform">
+          <img src={uploadIcon} alt="Upload" className="w-5 h-5 sm:w-6 sm:h-6" />
+        </button>
       </div>
     </motion.div>
   );
