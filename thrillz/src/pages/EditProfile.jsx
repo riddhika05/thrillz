@@ -3,7 +3,7 @@ import React from 'react'
 import  { useState } from 'react';
 import girl from "../assets/girl.png";
 import './EditProfile.css';
-
+import { useNavigate } from 'react-router-dom';
 const EditProfile = () => {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -46,6 +46,11 @@ const EditProfile = () => {
     }
   };
 
+  const navigate=useNavigate();
+  const handleClick = () => {
+    navigate("/");
+  };
+
   return (
     <div className="edit-profile-container">
        <button className="logout-btn-gradient" onClick={handleLogout}>
@@ -57,7 +62,7 @@ const EditProfile = () => {
 </svg>
 
         </span>
-        <span className="logout-btn-text">LOG-OUT</span>
+        <span className="logout-btn-text" onClick={handleClick}>LOG-OUT</span>
         <span className="logout-btn-arrow">
           {/* Right Arrow SVG Icon */}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
