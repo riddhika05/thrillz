@@ -5,7 +5,7 @@ import "./Profile.css";
 
 const Profile = () => {
   return (
-    <>
+    <div className="profile-container">
       {/* Top Navigation */}
       <div className="top-bar">
         <FaArrowLeft className="icon" />
@@ -44,7 +44,7 @@ const Profile = () => {
           <div key={i} className="square-box"></div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

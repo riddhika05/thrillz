@@ -1,7 +1,10 @@
-
-/* Top bar */
-
-
+.profile-container {
+  background-image: url('../assets/profile_bkg.png'); /* adjust path as needed */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  min-height: 100vh;
+}
 .icon {
   font-size: 30px;
   color: pink;
