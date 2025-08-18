@@ -8,10 +8,17 @@ import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
 import shareIcon from "../assets/share.png";
 import uploadIcon from "../assets/upload.png";
-
+import { useNavigate } from 'react-router-dom';
 const Profile = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
+  const navigate=useNavigate();
+  const handleContinue = () => {
+    navigate('/post');
+  };
+    const handleEdit = () => {
+    navigate('/edit-profile');
+  };
 
   useEffect(() => {
     async function fetchWhispers() {
@@ -33,7 +40,7 @@ const Profile = () => {
       style={{ backgroundImage: `url(${profileBkg})` }}
     >
       <div className="flex justify-between p-4 md:p-6 lg:p-8">
-        <FaArrowLeft className="text-pink-300 text-3xl cursor-pointer" />
+        <FaArrowLeft className="text-pink-300 text-3xl cursor-pointer" onClick={handleContinue} />
         <FaShareAlt className="text-pink-300 text-3xl cursor-pointer" />
       </div>
 
@@ -59,17 +66,17 @@ const Profile = () => {
       </div>
 
       <div className="flex justify-center mt-5">
-        <button className="bg-pink-300 text-white font-['Pacifico'] rounded-full px-6 py-2 text-lg md:text-xl lg:text-2xl cursor-pointer">
+        <button className="bg-pink-300 text-white font-['Pacifico'] rounded-full px-6 py-2 text-lg md:text-xl lg:text-2xl cursor-pointer" onClick={handleEdit}>
           Edit Profile
         </button>
       </div>
 
       {/* Recently Viewed */}
       <h2 className="text-2xl md:text-3xl lg:text-4xl text-center mt-6 md:mt-8 text-white font-bold">Whispers</h2>
-      <div className="flex flex-wrap justify-center gap-4 md:gap-5 lg:gap-4 mt-4">
+      <div className="flex flex-wrap justify-center gap-4 md:gap-1 lg:gap-4 mt-4">
         {error && <div className="text-red-500">{error}</div>}
         {whispers.length === 0 && !error && (
-          <div className="text-white">No whispers found.</div>
+          <div className="text-white">Loading Whispers....</div>
         )}
         {whispers.map((whisper) => (
           <div key={whisper.id} className="relative w-11/12 max-w-lg mx-auto rounded-3xl shadow-lg bg-pink-100 py-4 px-6 sm:py-6 sm:px-8 mb-3 sm:mb-4">
