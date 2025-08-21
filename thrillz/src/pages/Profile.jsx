@@ -1,38 +1,65 @@
 import React from "react";
 import myImage from "../assets/girl.png";
 import { supabase } from "../supabaseClient";
-import { FaArrowLeft, FaShareAlt } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 import profileBkg from "../assets/profile_bkg.png";
 import { useState, useEffect } from "react";
 import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
-import shareIcon from "../assets/share.png";
 import trashIcon from "../assets/Trash.png";
 import { useNavigate } from "react-router-dom";
-import Comments from "./Comments";
+
 const Profile = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
   const handleCommentClick = (whisper) => {
     navigate("/comments", { state: { whisper } });
   };
 
-  const navigate = useNavigate();
   const handleContinue = () => {
     navigate("/post");
   };
+
   const handleEdit = () => {
     navigate("/edit-profile");
   };
 
+  // New handleDelete function
+  const handleDelete = async (whisperId) => {
+    try {
+      const { error } = await supabase
+        .from('Whispers')
+        .delete()
+        .eq('id', whisperId);
+
+      if (error) {
+        throw error;
+      }
+
+      // If deletion is successful, update the state to remove the whisper from the UI
+      setWhispers(whispers.filter(whisper => whisper.id !== whisperId));
+      
+    } catch (error) {
+      console.error("Error deleting whisper:", error.message);
+      setError("Failed to delete the whisper. Please try again.");
+    }
+  };
+
   useEffect(() => {
     async function fetchWhispers() {
-       const { data, error } = await supabase.from('Whispers').select(`
+      const { data, error } = await supabase
+        .from('Whispers')
+        .select(`
           id,
           content,
           user_id,
           users:user_id (username, gmail, profilepic)
-        `).eq("user_id", 3);;
+        `)
+        .eq("user_id", 3);
+
       if (error) {
         setError(error.message);
       } else {
@@ -41,6 +68,7 @@ const Profile = () => {
     }
     fetchWhispers();
   }, []);
+
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
@@ -64,23 +92,23 @@ const Profile = () => {
 
         <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-10">
           <div className="flex flex-col items-center">
-            <span className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold  text-white">
+            <span className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold text-white">
               2k
             </span>
-            <span className="font-sans text-sm md:text-base lg:text-lg text-white ">
+            <span className="font-sans text-sm md:text-base lg:text-lg text-white">
               points
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold  text-white">
+            <span className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold text-white">
               2k
             </span>
-            <span className="font-sans text-sm md:text-base lg:text-lg text-white ">
+            <span className="font-sans text-sm md:text-base lg:text-lg text-white">
               likes
             </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold  text-white">
+            <span className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold text-white">
               4
             </span>
             <span className="font-sans text-sm md:text-base lg:text-lg text-white">
@@ -125,7 +153,7 @@ const Profile = () => {
                 />
               </button>
               <button
-                onClick={() => handleCommentClick(whisper)} // Add the click handler here
+                onClick={() => handleCommentClick(whisper)}
                 className="hover:scale-110 transition-transform"
               >
                 <img
@@ -134,7 +162,10 @@ const Profile = () => {
                   className="w-5 h-5 sm:w-6 sm:h-6"
                 />
               </button>
-              <button className="hover:scale-110 transition-transform">
+              <button
+                className="hover:scale-110 transition-transform"
+                onClick={() => handleDelete(whisper.id)} // Pass the ID here
+              >
                 <img
                   src={trashIcon}
                   alt="Delete"
