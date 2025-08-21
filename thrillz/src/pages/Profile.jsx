@@ -7,7 +7,7 @@ import { useState,useEffect } from 'react';
 import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
 import shareIcon from "../assets/share.png";
-import uploadIcon from "../assets/upload.png";
+import trashIcon from "../assets/Trash.png";
 import { useNavigate } from 'react-router-dom';
 const Profile = () => {
   const [whispers, setWhispers] = useState([]);
@@ -84,7 +84,7 @@ const Profile = () => {
               {whisper.content}
             </div>
             <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
-                    {[heartIcon, commentIcon,uploadIcon].map((icon, idx) => (
+                    {[heartIcon, commentIcon,trashIcon].map((icon, idx) => (
                       <button
                         key={idx}
                         className="hover:scale-110 transition-transform"

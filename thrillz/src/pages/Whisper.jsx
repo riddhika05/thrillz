@@ -3,8 +3,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
-import shareIcon from "../assets/share.png";
-import uploadIcon from "../assets/upload.png";
+import trashIcon from "../assets/Trash.png";
 import { useNavigate } from "react-router-dom";
 const Whisper = ({ whisper, containerRef }) => {
   const user = whisper.users;
@@ -69,7 +68,7 @@ const Whisper = ({ whisper, containerRef }) => {
           />
         </button>
         <button className="hover:scale-110 transition-transform">
-          <img src={uploadIcon} alt="Upload" className="w-5 h-5 sm:w-6 sm:h-6" />
+          <img src={trashIcon} alt="Delete" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
     </motion.div>
