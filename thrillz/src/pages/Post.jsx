@@ -29,7 +29,7 @@ function Header() {
 
   return (
     <>
-      <div className="sticky top-0 left-0 p-4 sm:p-6 md:p-8 flex items-center z-10 bg-white/60 backdrop-blur-lg">
+      <div className="sticky top-0 left-0 p-4 sm:p-6 md:p-8 flex items-center z-10">
         <img
           src={profileAvatar}
           alt="Profile Avatar"
