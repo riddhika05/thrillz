@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-// You'll need to have this image file in the same directory as your component.
-import backgroundImage from "../assets/new post.png"; 
-
+// You'll need to have this image file in the correct path.
+// For example, if 'assets' is a folder in your 'src' directory.
+import backgroundImage from "../assets/new post.png";
+import { supabase } from "../supabaseClient";
 export default function NewPost() {
-  const [text, setText] = useState(
-    ""
-  );
+  const [text, setText] = useState("");
+  // Removed uploadedImages state as image upload functionality is removed
 
   // formatting states
-  const [color, setColor] = useState("text-pink-500");
+  const [color, setColor] = useState("#784552");
   const [fontSize, setFontSize] = useState("text-base");
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
 
-  const handleColor = () => {
-    setColor(color === "text-pink-500" ? "text-blue-500" : "text-pink-500");
+  const handleColorChange = (event) => {
+    // event.target.value contains the new hex color string from the picker
+    setColor(event.target.value);
   };
 
   const handleFontSize = () => {
@@ -23,18 +24,8 @@ export default function NewPost() {
 
   const handleBold = () => setIsBold(!isBold);
   const handleItalic = () => setIsItalic(!isItalic);
-  const handleClear = () => setText("");
-
-  const handleImageUpload = (event) => {
-    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Append the base64-encoded image data as a Markdown image
-        setText((prev) => prev + `\n![](data:${file.type};base64,${reader.result.split(',')[1]})`);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleClear = () => {
+    setText("");
   };
 
   return (
@@ -42,113 +33,86 @@ export default function NewPost() {
       className="min-h-screen w-full flex flex-col items-center p-6 bg-cover bg-center"
       style={{ backgroundImage: `url(${backgroundImage})` }}
     >
-      {/* Header */}
       <header className="text-center mb-6">
-        <h1 className="font-bold text-4xl mb-2 text-white">New POST</h1>
+        <h1 className="font-bold text-4xl mb-2 text-white">New Whisper</h1>
         <p className="text-sm opacity-80 text-white">
           location - Near Clock Tower, Jaipur, Rajasthan ,pin-332131
         </p>
       </header>
 
-      {/* Note */}
       <section className="w-full max-w-2xl bg-pink-100 rounded-lg border border-pink-200 overflow-hidden">
-        {/* Toolbar */}
-        <div className="flex gap-3 p-3 border-b border-pink-200 bg-pink-50">
-          <button
-            onClick={handleColor}
-            className="p-2 rounded bg-pink-200 hover:bg-pink-300"
-          >
+        <div className="flex gap-3 p-3 border-b border-pink-200 bg-pink-400">
+          <div className="relative p-2 rounded bg-pink-400 hover:bg-pink-300">
             🎨
-          </button>
+            <input
+              type="color"
+              value={color}
+              onChange={handleColorChange}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </div>
           <button
             onClick={handleFontSize}
-            className="p-2 rounded bg-pink-200 hover:bg-pink-300"
+            className="p-2 rounded bg-pink-400 hover:bg-pink-300 text-white"
           >
             Aa
           </button>
           <button
             onClick={handleBold}
             className={`p-2 rounded ${
-              isBold ? "bg-pink-300" : "bg-pink-200"
-            }`}
+              isBold ? "bg-pink-300" : "bg-pink-400"
+            } text-white`}
           >
             B
           </button>
           <button
             onClick={handleItalic}
             className={`p-2 rounded ${
-              isItalic ? "bg-pink-300" : "bg-pink-200"
-            }`}
+              isItalic ? "bg-pink-300" : "bg-pink-400"
+            } text-white`}
           >
             I
           </button>
           <button
             onClick={handleClear}
-            className="p-2 rounded bg-pink-200 hover:bg-pink-300"
+            className="p-2 rounded bg-pink-400 hover:bg-pink-300 text-white"
           >
             ⌫
           </button>
-          <label className="p-2 rounded bg-pink-200 hover:bg-pink-300 cursor-pointer">
-            🖼
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleImageUpload}
-            />
-          </label>
         </div>
 
-        {/* Paper area */}
         <div className="relative h-96">
-          {/* Preview overlay */}
           <div
-            className={`absolute inset-0 overflow-auto whitespace-pre-wrap p-4 pointer-events-none ${color} ${fontSize} ${
-              isBold ? "font-bold" : "font-medium"
-            } ${isItalic ? "italic" : ""} leading-relaxed`}
-            style={{ lineHeight: '1.5' }}
-          >
-            {text.split("\n").map((line, idx) => {
-              const mdMatch = line.match(/!\[.*?\]\((.*?)\)/);
-              if (mdMatch) {
-                return (
-                  <img
-                    key={idx}
-                    src={mdMatch[1]}
-                    alt="inserted"
-                    className="max-w-full my-2 rounded"
-                  />
-                );
-              }
+  className={`absolute inset-0 overflow-auto whitespace-pre-wrap p-4 pointer-events-none ${fontSize} ${
+    isBold ? "font-bold" : "font-medium"
+  } ${isItalic ? "italic" : ""} leading-relaxed`}
+  style={{ color: color, lineHeight: "1.5" }}
+>
+  {text.split("\n").map((line, idx) => (
+    <p key={idx} className="my-1">
+      {line}
+    </p>
+  ))}
+</div>
 
-              return (
-                <p key={idx} className="my-1">
-                  {line}
-                </p>
-              );
-            })}
-          </div>
-
-          {/* Editable textarea */}
-          <textarea
-            className={`absolute inset-0 w-full h-full resize-none
-             caret-pink-500 p-4 outline-none selection:bg-pink-200
-             ${color} ${fontSize} ${isBold ? "font-bold" : "font-medium"} ${
-              isItalic ? "italic" : ""
-            } leading-relaxed`}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            spellCheck="true"
-            aria-label="Post text"
-            style={{ lineHeight: '2' }}
-          />
+<textarea
+  className={`absolute inset-0 w-full h-full resize-none caret-pink-500 p-4 outline-none selection:bg-pink-200 bg-white font-[cursive] text-sm ${fontSize} leading-6 ${
+    isBold ? "font-bold" : "font-medium"
+  } ${isItalic ? "italic" : ""}`}
+  value={text}
+  onChange={(e) => setText(e.target.value)}
+  spellCheck="true"
+  aria-label="Post text"
+  style={{ color: color, lineHeight: "1.5" }}
+/>
+          
+          
         </div>
       </section>
 
-      {/* Upload button with hover shadow */}
       <div className="mt-6">
         <button
-          className="px-6 py-2 rounded-full bg-pink-200 text-gray-700 font-semibold
+          className="px-6 py-2 rounded-full bg-pink-400 text-white font-semibold
           transition-all duration-200 hover:shadow-lg active:scale-95"
         >
           UPLOAD

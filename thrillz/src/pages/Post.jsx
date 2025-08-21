@@ -45,7 +45,7 @@ function Header() {
             onClick={handleAddPost}
           >
             <div className="font-['Pacifico'] font-normal not-italic text-center">
-              Add Post
+              Add Whisper
             </div>
           </div>
         </div>
