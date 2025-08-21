@@ -46,7 +46,7 @@ const Whisper = ({ whisper, containerRef }) => {
               <span className="text-pink-800 font-semibold text-xs sm:text-sm">
                 {user.username}
               </span>
-              <span className="text-pink-500 text-[10px] sm:text-xs">{user.gmail}</span>
+              {/* <span className="text-pink-500 text-[10px] sm:text-xs">{user.gmail}</span> */}
             </div>
           </>
         )}
