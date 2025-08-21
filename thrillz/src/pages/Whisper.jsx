@@ -69,9 +69,6 @@ const Whisper = ({ whisper, containerRef }) => {
           />
         </button>
         <button className="hover:scale-110 transition-transform">
-          <img src={shareIcon} alt="Share" className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
-        <button className="hover:scale-110 transition-transform">
           <img src={uploadIcon} alt="Upload" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
