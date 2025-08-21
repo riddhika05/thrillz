@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+// You'll need to have this image file in the same directory as your component.
+import backgroundImage from "../assets/new post.png"; 
 
 export default function NewPost() {
   const [text, setText] = useState(
-    "heyy !!\nWelcome to wonderland\nmust try blueberry cheesecake present in vending\nmachine."
+    ""
   );
 
   // formatting states
@@ -23,17 +25,27 @@ export default function NewPost() {
   const handleItalic = () => setIsItalic(!isItalic);
   const handleClear = () => setText("");
 
-  const handleImageInsert = () => {
-    const url = prompt("Enter image URL:");
-    if (url) setText((prev) => prev + `\n${url}`);
+  const handleImageUpload = (event) => {
+    const file = event.target.files && event.target.files.length > 0 ? event.target.files[0] : null;
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Append the base64-encoded image data as a Markdown image
+        setText((prev) => prev + `\n![](data:${file.type};base64,${reader.result.split(',')[1]})`);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center p-6 bg-gradient-to-b from-[#6c7fb6] via-[#8ea2d1] to-[#f8c7b3]">
+    <div
+      className="min-h-screen w-full flex flex-col items-center p-6 bg-cover bg-center"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       {/* Header */}
       <header className="text-center mb-6">
-        <h1 className="font-bold text-4xl mb-2">New POST</h1>
-        <p className="text-sm opacity-80">
+        <h1 className="font-bold text-4xl mb-2 text-white">New POST</h1>
+        <p className="text-sm opacity-80 text-white">
           location - Near Clock Tower, Jaipur, Rajasthan ,pin-332131
         </p>
       </header>
@@ -76,12 +88,15 @@ export default function NewPost() {
           >
             ⌫
           </button>
-          <button
-            onClick={handleImageInsert}
-            className="p-2 rounded bg-pink-200 hover:bg-pink-300"
-          >
+          <label className="p-2 rounded bg-pink-200 hover:bg-pink-300 cursor-pointer">
             🖼
-          </button>
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageUpload}
+            />
+          </label>
         </div>
 
         {/* Paper area */}
@@ -90,10 +105,10 @@ export default function NewPost() {
           <div
             className={`absolute inset-0 overflow-auto whitespace-pre-wrap p-4 pointer-events-none ${color} ${fontSize} ${
               isBold ? "font-bold" : "font-medium"
-            } ${isItalic ? "italic" : ""}`}
+            } ${isItalic ? "italic" : ""} leading-relaxed`}
+            style={{ lineHeight: '1.5' }}
           >
             {text.split("\n").map((line, idx) => {
-              // check markdown image
               const mdMatch = line.match(/!\[.*?\]\((.*?)\)/);
               if (mdMatch) {
                 return (
@@ -106,23 +121,6 @@ export default function NewPost() {
                 );
               }
 
-              // check plain image URL
-             // check if it's a URL (any type, not just .jpg/.png)
-if (line.trim().startsWith("http")) {
-  return (
-    <img
-      key={idx}
-      src={line.trim()}
-      alt="inserted"
-      className="max-w-full my-2 rounded"
-      onError={(e) => {
-        // if not a real image, just show the text fallback
-        e.target.outerHTML = `<p class="my-1">${line}</p>`;
-      }}
-    />
-  );
-}
-
               return (
                 <p key={idx} className="my-1">
                   {line}
@@ -133,16 +131,16 @@ if (line.trim().startsWith("http")) {
 
           {/* Editable textarea */}
           <textarea
-            className={`absolute inset-0 w-full h-full resize-none 
-             bg-[repeating-linear-gradient(white,white_31px,#ddd_31px,#ddd_32px)]
+            className={`absolute inset-0 w-full h-full resize-none
              caret-pink-500 p-4 outline-none selection:bg-pink-200
              ${color} ${fontSize} ${isBold ? "font-bold" : "font-medium"} ${
               isItalic ? "italic" : ""
-            }`}
+            } leading-relaxed`}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            spellCheck="false"
+            spellCheck="true"
             aria-label="Post text"
+            style={{ lineHeight: '2' }}
           />
         </div>
       </section>
