@@ -25,6 +25,11 @@ const Whisper = ({ whisper, containerRef }) => {
   const handleCommentClick = () => {
     navigate("/comments", { state: { whisper } });
   };
+  
+  // New handler for clicking on the user's profile
+  const handleUserClick = () => {
+    navigate("/follow", { state: { whisper } });
+  };
 
   
   return (
@@ -45,7 +50,7 @@ const Whisper = ({ whisper, containerRef }) => {
               alt={user.username}
               className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-pink-300"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col cursor-pointer" onClick={handleUserClick}> {/* Added onClick here */}
               <span className="text-pink-800 font-semibold text-xs sm:text-sm">
                 {user.username}
               </span>
