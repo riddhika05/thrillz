@@ -66,12 +66,16 @@ export default function NewPost() {
       </div>
       <header className="text-center mb-6">
         <h1 className="font-bold text-4xl mb-2 text-white">New Whisper</h1>
-        <p className="text-sm opacity-80 text-white">
+        <p className="text-sm opacity-80 text-white font-bold">
           location - Near Clock Tower, Jaipur, Rajasthan ,pin-332131
         </p>
       </header>
 
-      <section className="w-full max-w-2xl bg-pink-200 border-t border-l border-r border-pink-200 rounded-t-lg overflow-hidden">
+      <section
+  className={`w-full max-w-2xl bg-pink-200 border-t border-l border-r border-pink-200 overflow-hidden ${
+    image ? "rounded-t-lg" : "rounded-lg"
+  }`}
+>
         <div className="flex gap-3 p-3 border-b border-pink-200 bg-pink-400">
           <div className="relative p-2 rounded bg-pink-400 hover:bg-pink-300">
             🎨
