@@ -4,7 +4,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 export default function NewPost() {
-  const [text, setText] = useState("Write your First whisper!");
+  const [text, setText] = useState("Write your Whisper!");
   const [color, setColor] = useState("#784552");
   const [fontSize, setFontSize] = useState("text-base");
   const [isBold, setIsBold] = useState(false);
