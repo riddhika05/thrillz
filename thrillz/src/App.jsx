@@ -7,6 +7,8 @@ import Avatar from './pages/Avatar';
 import Chatbot from './pages/Chatbot';
 import Chat from './pages/Chat';
 import Comments from "./pages/Comments"
+import Newpost from "./pages/Newpost"
+import Follow from './pages/Follow'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 function App() {
   
@@ -24,6 +26,8 @@ function App() {
         <Route path='/chatbot' element={<Chatbot />} />
         <Route path='/chat' element={<Chat />} />
         <Route path='/comments' element={<Comments />} />
+        <Route path='/newpost' element={<Newpost />} />
+        <Route path='/follow' element={<Follow />} />
       </Routes>
      </Router>
     </>

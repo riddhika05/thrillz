@@ -1,29 +1,37 @@
 "use client";
-import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
-import shareIcon from "../assets/share.png";
-import uploadIcon from "../assets/upload.png";
+import trashIcon from "../assets/Trash.png";
 import { useNavigate } from "react-router-dom";
+import  {useRef, useState } from "react";
+
+
 const Whisper = ({ whisper, containerRef }) => {
   const user = whisper.users;
   const ref = useRef(null);
+ 
 
   const { scrollYProgress } = useScroll({
     target: ref,
     container: containerRef,
     offset: ["start end", "center center"],
   });
-  
-  const navigate=useNavigate();
+
+  const navigate = useNavigate();
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.85, 1.1, 0.85]);
   const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.5, 1, 0.5]);
-  
+
   const handleCommentClick = () => {
-    navigate("/comments", { state: { whisper } }); // Pass the whisper object in state
+    navigate("/comments", { state: { whisper } });
+  };
+  
+  // New handler for clicking on the user's profile
+  const handleUserClick = () => {
+    navigate("/follow", { state: { whisper } });
   };
 
+  
   return (
     <motion.div
       ref={ref}
@@ -31,7 +39,7 @@ const Whisper = ({ whisper, containerRef }) => {
       className="relative w-11/12 max-w-lg mx-auto rounded-3xl shadow-lg bg-pink-100 py-4 px-6 sm:py-6 sm:px-8 mb-16 sm:mb-20 transition-all duration-300"
       initial={{ scale: 0.85, opacity: 0.5 }}
       whileInView={{ scale: 1.1, opacity: 1 }}
-      viewport={{ once: false, amount: 0.2}}
+      viewport={{ once: false, amount: 0.2 }}
       transition={{ type: "spring", bounce: 0.4 }}
     >
       <div className="flex items-center gap-3 pb-2">
@@ -42,11 +50,10 @@ const Whisper = ({ whisper, containerRef }) => {
               alt={user.username}
               className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-pink-300"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col cursor-pointer" onClick={handleUserClick}> {/* Added onClick here */}
               <span className="text-pink-800 font-semibold text-xs sm:text-sm">
                 {user.username}
               </span>
-              <span className="text-pink-500 text-[10px] sm:text-xs">{user.gmail}</span>
             </div>
           </>
         )}
@@ -59,7 +66,7 @@ const Whisper = ({ whisper, containerRef }) => {
           <img src={heartIcon} alt="Heart" className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
         <button
-          onClick={handleCommentClick} // Add the click handler here
+          onClick={handleCommentClick}
           className="hover:scale-110 transition-transform"
         >
           <img
@@ -68,12 +75,7 @@ const Whisper = ({ whisper, containerRef }) => {
             className="w-5 h-5 sm:w-6 sm:h-6"
           />
         </button>
-        <button className="hover:scale-110 transition-transform">
-          <img src={shareIcon} alt="Share" className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
-        <button className="hover:scale-110 transition-transform">
-          <img src={uploadIcon} alt="Upload" className="w-5 h-5 sm:w-6 sm:h-6" />
-        </button>
+        
       </div>
     </motion.div>
   );

@@ -23,8 +23,8 @@ function Header() {
     navigate("/profile");
   }
 
-  function handleClickBot() {
-    navigate("/chatbot");
+  function handleAddPost() {
+    navigate("/newpost");
   }
 
   return (
@@ -36,9 +36,17 @@ function Header() {
           className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-20 lg:w-20 cursor-pointer"
           onClick={handleClick}
         />
-        <div className="ml-auto flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 text-[#5a4fcf]">
+        <div className="ml-auto flex flex-wrap items-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 text-[#5a4fcf]">
           <img src={musicIcon} alt="Music" className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12" />
           <Explore />
+          <div
+            className="w-24 h-10 sm:w-28 sm:h-12 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-xs sm:text-sm"
+            onClick={handleAddPost}
+          >
+            <div className="font-['Pacifico'] font-normal not-italic text-center">
+              Add Whisper
+            </div>
+          </div>
         </div>
       </div>
       <div className="w-9/12 mx-auto mt-4 sm:mt-8 md:mt-12 max-h-[70vh] overflow-y-auto hide-scrollbar">
@@ -55,7 +63,7 @@ function Explore() {
   }
   return (
     <div
-      className="w-32 h-16 sm:w-36 sm:h-18 md:w-40 md:h-20 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base"
+      className="w-24 h-10 sm:w-28 sm:h-12 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-xs sm:text-sm"
       onClick={handleClick}
     >
       <div className="font-['Pacifico'] font-normal not-italic text-center">

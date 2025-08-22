@@ -25,7 +25,7 @@ const Whispers = () => {
   }, [supabase]); 
 
   if (error) return <div>Error: {error}</div>;
-  if (!whispers.length) return <div>Loading whispers...</div>;
+  if (!whispers.length) return <div>Loading whispers...</div>; //Aaayush ka kaam
 
   return (
     <ul style={{ listStyleType: "none" }}>
