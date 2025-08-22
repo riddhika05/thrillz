@@ -4,13 +4,11 @@ import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
 import trashIcon from "../assets/Trash.png";
 import { useNavigate } from "react-router-dom";
-import  {useRef, useState } from "react";
-
+import { useRef, useState } from "react";
 
 const Whisper = ({ whisper, containerRef }) => {
   const user = whisper.users;
   const ref = useRef(null);
- 
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -25,13 +23,12 @@ const Whisper = ({ whisper, containerRef }) => {
   const handleCommentClick = () => {
     navigate("/comments", { state: { whisper } });
   };
-  
+
   // New handler for clicking on the user's profile
   const handleUserClick = () => {
     navigate("/follow", { state: { whisper } });
   };
 
-  
   return (
     <motion.div
       ref={ref}
@@ -50,7 +47,12 @@ const Whisper = ({ whisper, containerRef }) => {
               alt={user.username}
               className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-pink-300"
             />
-            <div className="flex flex-col cursor-pointer" onClick={handleUserClick}> {/* Added onClick here */}
+            <div
+              className="flex flex-col cursor-pointer"
+              onClick={handleUserClick}
+            >
+              {" "}
+              {/* Added onClick here */}
               <span className="text-pink-800 font-semibold text-xs sm:text-sm">
                 {user.username}
               </span>
@@ -61,6 +63,15 @@ const Whisper = ({ whisper, containerRef }) => {
       <div className="mt-2 font-[cursive] text-sm sm:text-[16px] text-[#784552] leading-6">
         {whisper.content}
       </div>
+      {whisper.Image_url && (
+        <div className="mt-2 flex justify-center">
+          <img
+            src={whisper.Image_url}
+            alt="Whisper"
+            className="w-40 h-40 object-cover rounded-lg shadow" // Fixed size
+          />
+        </div>
+      )}
       <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
         <button className="hover:scale-110 transition-transform">
           <img src={heartIcon} alt="Heart" className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -75,7 +86,6 @@ const Whisper = ({ whisper, containerRef }) => {
             className="w-5 h-5 sm:w-6 sm:h-6"
           />
         </button>
-        
       </div>
     </motion.div>
   );

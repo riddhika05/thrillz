@@ -12,6 +12,7 @@ const Whispers = () => {
     id,
     content,
     user_id,
+    Image_url,
     users:user_id (username, gmail, profilepic)
   `);
    console.log("Full response:", { data, error });

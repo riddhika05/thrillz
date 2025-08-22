@@ -31,17 +31,16 @@ const Profile = () => {
   const handleDelete = async (whisperId) => {
     try {
       const { error } = await supabase
-        .from('Whispers')
+        .from("Whispers")
         .delete()
-        .eq('id', whisperId);
+        .eq("id", whisperId);
 
       if (error) {
         throw error;
       }
 
       // If deletion is successful, update the state to remove the whisper from the UI
-      setWhispers(whispers.filter(whisper => whisper.id !== whisperId));
-      
+      setWhispers(whispers.filter((whisper) => whisper.id !== whisperId));
     } catch (error) {
       console.error("Error deleting whisper:", error.message);
       setError("Failed to delete the whisper. Please try again.");
@@ -51,13 +50,16 @@ const Profile = () => {
   useEffect(() => {
     async function fetchWhispers() {
       const { data, error } = await supabase
-        .from('Whispers')
-        .select(`
+        .from("Whispers")
+        .select(
+          `
           id,
           content,
           user_id,
+          Image_url,
           users:user_id (username, gmail, profilepic)
-        `)
+        `
+        )
         .eq("user_id", 3);
 
       if (error) {
@@ -131,7 +133,7 @@ const Profile = () => {
       <h2 className="text-2xl md:text-3xl lg:text-4xl text-center mt-6 md:mt-8 text-white font-bold">
         Whispers
       </h2>
-      <div className="flex flex-wrap justify-center gap-4 md:gap-1 lg:gap-4 mt-4">
+      <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mt-4">
         {error && <div className="text-red-500">{error}</div>}
         {whispers.length === 0 && !error && (
           <div className="text-white">Loading Whispers....</div>
@@ -144,7 +146,16 @@ const Profile = () => {
             <div className="mt-2 font-[cursive] text-sm sm:text-[16px] text-[#784552] leading-6">
               {whisper.content}
             </div>
-            <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
+            {whisper.Image_url && (
+              <div className="mt-2 flex justify-center">
+                <img
+                  src={whisper.Image_url}
+                  alt="Whisper"
+                  className="max-h-60 max-w-full rounded-lg shadow"
+                />
+              </div>
+            )}
+            <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg sticky">
               <button className="hover:scale-110 transition-transform">
                 <img
                   src={heartIcon}
