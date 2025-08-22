@@ -1,9 +1,18 @@
-
-import React from 'react'
-import  { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import girl from "../assets/girl.png";
 import './EditProfile.css';
 import { useNavigate } from 'react-router-dom';
+import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
+
+function generateUsername() {
+  return uniqueNamesGenerator({
+    dictionaries: [adjectives, animals],
+    separator: '',
+    style: 'capital',
+    length: 2,
+  });
+}
+
 const EditProfile = () => {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -12,6 +21,8 @@ const EditProfile = () => {
   const [triggerWords, setTriggerWords] = useState([]);
   const [profanity, setProfanity] = useState(true);
   const [avatarPreview, setAvatarPreview] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleAddTriggerWord = () => {
     if (triggerWordInput.trim() && !triggerWords.includes(triggerWordInput.trim())) {
@@ -42,43 +53,54 @@ const EditProfile = () => {
     if (file) {
       const url = URL.createObjectURL(file);
       setAvatarPreview(url);
-      // Additional upload logic if needed
     }
   };
+  
+  useEffect(() => {
+  if (!nickname) {
+    setNickname(generateUsername());
+  }
+}, []);
 
-  const navigate=useNavigate();
+  // cleanup object URL to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview);
+    };
+  }, [avatarPreview]);
+
   const handleClick = () => {
     navigate("/");
   };
 
   return (
     <div className="edit-profile-container">
-       <button className="logout-btn-gradient" onClick={handleLogout}>
+      <button className="logout-btn-gradient" onClick={handleLogout}>
         <span className="logout-btn-icon">
-          {/* Logout/Door SVG Icon */}
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <path d="M7 12h7m0 0-3-3m3 3-3 3m7-10v14c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2z"
-        stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-
+            <path d="M7 12h7m0 0-3-3m3 3-3 3m7-10v14c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2z"
+              stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
         </span>
         <span className="logout-btn-text" onClick={handleClick}>LOG-OUT</span>
         <span className="logout-btn-arrow">
-          {/* Right Arrow SVG Icon */}
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <path d="M10 18l6-6-6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 18l6-6-6-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
       </button>
 
+      {/* Avatar Section */}
       <div className="avatar-container">
         <div className="avatar">
-           <img  src={girl} 
-      alt="User Avatar"
-      style={{ width: '100%', height: '100%', borderRadius: '50%' }} /> 
+          <img
+            src={avatarPreview || girl}
+            alt="User Avatar"
+            style={{ width: '100%', height: '100%', borderRadius: '50%' }}
+          />
         </div>
-        <div 
-          className="plus-icon" 
+        <div
+          className="plus-icon"
           onClick={() => document.getElementById('avatar-upload').click()}
           style={{ cursor: 'pointer' }}
           title="Change profile picture"
@@ -94,6 +116,7 @@ const EditProfile = () => {
         />
       </div>
 
+      {/* Form Section */}
       <form className="edit-profile-form" onSubmit={handleSave}>
         <div className="form-row">
           <label className="edit-label" htmlFor="nickname">Change nickname</label>
@@ -151,8 +174,8 @@ const EditProfile = () => {
         </div>
         <div className="trigger-words-section" id="triggerWords">
           {triggerWords.map((word, idx) => (
-            <span 
-              key={idx} 
+            <span
+              key={idx}
               className="trigger-word"
               style={{ display: 'flex', alignItems: 'center', marginRight: '7px' }}
             >
