@@ -113,7 +113,7 @@ export default function NewPost() {
       <section
         className={`w-full max-w-2xl bg-pink-200 border-t border-l border-r border-pink-200 overflow-hidden ${
           image ? "rounded-t-lg" : "rounded-lg"
-        }`}
+        } h-30 sm:h-40 md:h-60`}
       >
         <div className="flex gap-3 p-3 border-b border-pink-200 bg-pink-400">
           <div className="relative p-2 rounded bg-pink-400 hover:bg-pink-300">
@@ -204,7 +204,7 @@ export default function NewPost() {
           <img
             src={image}
             alt="Uploaded"
-            className="max-h-60 max-w-full rounded-lg shadow mb-3"
+            className="w-40 h-40 object-cover rounded-lg shadow mb-3"
           />
         </div>
       )}
