@@ -27,6 +27,9 @@ const Follow = () => {
   const handleCommentClick = (whisper) => {
     navigate("/comments", { state: { whisper } });
   };
+  const handleChat = () => {
+    navigate("/chat");
+  };
 
   const handleContinue = () => {
     navigate("/post");
@@ -139,7 +142,7 @@ const Follow = () => {
         </div>
       </div>
 
-      <div className="flex justify-center mt-5">
+      <div className="flex justify-center mt-5 gap-5">
         {isCurrentUserProfile ? (
           <button
             className="bg-pink-300 text-white font-['Pacifico'] rounded-full px-6 py-2 text-lg md:text-xl lg:text-2xl cursor-pointer"
@@ -155,8 +158,15 @@ const Follow = () => {
             {isFollowing ? "Following" : "Follow"}
           </button>
         )}
-      </div>
+        <button
+            className="bg-pink-300 text-white font-['Pacifico'] rounded-full px-6 py-2 text-lg md:text-xl lg:text-2xl cursor-pointer"
+            onClick={handleChat}
+          >
+           Chat
+          </button>
 
+      </div>
+      
       <h2 className="text-2xl md:text-3xl lg:text-4xl text-center mt-6 md:mt-8 text-white font-bold">
         {isCurrentUserProfile
           ? "My Whispers"
