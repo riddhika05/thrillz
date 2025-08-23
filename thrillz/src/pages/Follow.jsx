@@ -6,16 +6,18 @@ import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
 import trashIcon from "../assets/Trash.png";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useWindowSize } from "react-use";
+import Confetti from "react-confetti";
 
 const Follow = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
-
+  const [showConfetti, setShowConfetti] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { whisper } = location.state || {};
-
+  const { width, height } = useWindowSize();
   // 🚨 Redirect to /profile if user_id is 3
   useEffect(() => {
     const userId = whisper ? whisper.user_id : 3;
@@ -52,6 +54,8 @@ const Follow = () => {
 
   const toggleFollow = () => {
     setIsFollowing(!isFollowing);
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 6000);
   };
 
   useEffect(() => {
@@ -156,17 +160,19 @@ const Follow = () => {
             onClick={toggleFollow}
           >
             {isFollowing ? "Following" : "Follow"}
+            {showConfetti && (
+              <Confetti width={width} height={height} numberOfPieces={300} />
+            )}
           </button>
         )}
         <button
-            className="bg-pink-300 text-white font-['Pacifico'] rounded-full px-6 py-2 text-lg md:text-xl lg:text-2xl cursor-pointer"
-            onClick={handleChat}
-          >
-           Chat
-          </button>
-
+          className="bg-pink-300 text-white font-['Pacifico'] rounded-full px-6 py-2 text-lg md:text-xl lg:text-2xl cursor-pointer"
+          onClick={handleChat}
+        >
+          Chat
+        </button>
       </div>
-      
+
       <h2 className="text-2xl md:text-3xl lg:text-4xl text-center mt-6 md:mt-8 text-white font-bold">
         {isCurrentUserProfile
           ? "My Whispers"
