@@ -9,6 +9,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
 
+
 const Follow = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);

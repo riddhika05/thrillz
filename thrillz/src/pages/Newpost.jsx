@@ -10,8 +10,8 @@ export default function NewPost() {
   const [fontSize, setFontSize] = useState("text-base");
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
-  const [image, setImage] = useState(null); // preview
-  const [file, setFile] = useState(null);   // raw file for upload
+  const [image, setImage] = useState(null); 
+  const [file, setFile] = useState(null);  
   const fileInputRef = useRef();
   const textareaRef = useRef(null);
 
@@ -75,7 +75,7 @@ export default function NewPost() {
 
       if (insertError) throw insertError;
       console.log(insertError)
-      // alert("Whisper uploaded successfully!");
+     
       navigate("/post");
     } catch (err) {
       console.error("Error uploading whisper:", err.message);
@@ -83,7 +83,7 @@ export default function NewPost() {
     }
   };
 
-  // Focus textarea at end of text when editing
+  
   useEffect(() => {
     if (textareaRef.current) {
       const end = textareaRef.current.value.length;

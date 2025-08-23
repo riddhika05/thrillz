@@ -3,14 +3,19 @@ import { useNavigate, useLocation } from "react-router-dom";
 import musicIcon from "../assets/music.png";
 import profileAvatar from "../assets/girl.png";
 import chatbkg from "../assets/profile_bkg.png";
-
+import { FaArrowLeft } from "react-icons/fa";
 const Chat = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { whisper } = location.state || {};
 
   const [comments, setComments] = useState([
-    { id: 1, user: "crazypanda_11", text: "nicee pretty! can we talk in private chat?", likes: 4 },
+    {
+      id: 1,
+      user: "crazypanda_11",
+      text: "nicee pretty! can we talk in private chat?",
+      likes: 4,
+    },
     { id: 2, user: "kittycat12", text: "woww awesome post!", likes: 2 },
     { id: 3, user: "cake_lover5", text: "amazing work!", likes: 7 },
     { id: 4, user: "pookie11", text: "keep going!", likes: 1 },
@@ -32,6 +37,7 @@ const Chat = () => {
   };
 
   const handleClick = () => navigate("/profile");
+   const handleBack = () => navigate("/post");
   const handleClickBot = () => navigate("/chatbot");
   const handleExploreClick = () => navigate("/explore");
 
@@ -61,14 +67,14 @@ const Chat = () => {
           {whisper.content}
         </p>
         {whisper.Image_url && (
-        <div className="mt-2 flex justify-center">
-          <img
-            src={whisper.Image_url}
-            alt="Whisper"
-            className="w-40 h-40 object-cover rounded-lg shadow"
-          />
-        </div>
-      )}
+          <div className="mt-2 flex justify-center">
+            <img
+              src={whisper.Image_url}
+              alt="Whisper"
+              className="w-40 h-40 object-cover rounded-lg shadow"
+            />
+          </div>
+        )}
       </div>
     );
   };
@@ -79,10 +85,14 @@ const Chat = () => {
       style={{ backgroundImage: `url(${chatbkg})` }}
     >
       {/* Main Content Wrapper for Responsiveness */}
-      <div className="max-w-7xl mx-auto p-4 sm:p-6 md:p-8">
+      <div className="max-w-8xl mx-auto  p-4 sm:p-6 md:p-8">
         {/* Sticky header with background and proper z-index */}
+
         <div className="sticky top-0 pl-5 pr-5 left-0  flex items-center z-20 w-full py-4 bg-gradient-to-r from-pink-100/60 to-purple-100/60 backdrop-blur-md rounded-b-xl shadow-sm mb-4">
           {/* Profile */}
+          <div className="flex justify-between p-4 md:p-6 lg:p-8" onClick={handleBack}>
+            <FaArrowLeft className="text-pink-400 text-3xl cursor-pointer" />
+          </div>
           <img
             src={profileAvatar}
             alt="Profile Avatar"
@@ -99,7 +109,7 @@ const Chat = () => {
             />
             {/* Explore button */}
             <div
-              className="w-32 h-16 sm:w-36 sm:h-18 md:w-40 md:h-20 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors"
+              className="w-28 h-14 sm:w-36 sm:h-18 md:w-40 md:h-20 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors"
               onClick={handleExploreClick}
             >
               <div className="font-['Pacifico'] font-normal not-italic text-center">
@@ -108,25 +118,33 @@ const Chat = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Content Container with increased top margin */}
         <div className="max-w-xl mx-auto mt-6">
           {/* Dynamic Post Card */}
           <div className="mt-4">
             <PostCard />
           </div>
-          
+
           {/* Comments Section */}
           <div className="w-full mt-6 bg-gray-200/50 backdrop-blur-sm rounded-2xl p-4 shadow-md">
             <h3 className="font-bold text-lg mb-3 text-pink-800">Comments</h3>
             {/* Scrollable container with max height */}
             <div className="max-h-[30rem] overflow-y-auto pr-2 hide-scrollbar">
               {comments.map((c) => (
-                <div key={c.id} className="flex items-start gap-3 mb-4 p-2 rounded-lg hover:bg-white/30 transition-colors">
-                  <img src={profileAvatar} alt="Comment" className="h-8 w-8 rounded-full flex-shrink-0" />
+                <div
+                  key={c.id}
+                  className="flex items-start gap-3 mb-4 p-2 rounded-lg hover:bg-white/30 transition-colors"
+                >
+                  <img
+                    src={profileAvatar}
+                    alt="Comment"
+                    className="h-8 w-8 rounded-full flex-shrink-0"
+                  />
                   <div className="flex-1">
                     <p className="text-sm font-semibold text-pink-800">
-                      {c.user} <span className="ml-2 text-xs text-gray-500">6w</span>
+                      {c.user}{" "}
+                      <span className="ml-2 text-xs text-gray-500">6w</span>
                     </p>
                     <p className="text-sm text-gray-700 mt-1">{c.text}</p>
                     <span
