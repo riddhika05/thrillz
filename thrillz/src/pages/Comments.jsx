@@ -4,6 +4,7 @@ import musicIcon from "../assets/music.png";
 import profileAvatar from "../assets/girl.png";
 import chatbkg from "../assets/profile_bkg.png";
 import { FaArrowLeft } from "react-icons/fa";
+
 const Chat = () => {
   const navigate = useNavigate();
   const location = useLocation();
