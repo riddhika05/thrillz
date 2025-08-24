@@ -5,6 +5,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import { supabase } from "../supabaseClient";
+import DreamyLoader from '../components/loader' // Ensure this path is correct
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
@@ -82,6 +83,7 @@ export default function Map() {
   const [whispers, setWhispers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("cafe");
+  const [loading, setLoading] = useState(true); // Added loading state
 
   // Fetch place name from lat/lon
   const fetchPlaceName = async (lat, lon) => {
@@ -136,6 +138,7 @@ export default function Map() {
 
   // Locate user
   const locateMe = () => {
+    setLoading(true); // Start loading
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
@@ -143,8 +146,9 @@ export default function Map() {
           setPosition(newPosition);
           const name = await fetchPlaceName(newPosition[0], newPosition[1]);
           setPlaceName(name);
-          fetchAndSetPlaces(newPosition[0], newPosition[1], category);
+          await fetchAndSetPlaces(newPosition[0], newPosition[1], category);
           setLoaded(true);
+          setLoading(false); // End loading after all data is fetched
 
           // ✅ Save to Supabase
           saveLocationToDB(name);
@@ -152,10 +156,12 @@ export default function Map() {
         (err) => {
           console.error("Geolocation error:", err);
           setLoaded(true);
+          setLoading(false); // End loading even if there's an error
         }
       );
     } else {
       setLoaded(true);
+      setLoading(false); // End loading if geolocation is not supported
     }
   };
 
@@ -164,6 +170,7 @@ export default function Map() {
     e.preventDefault();
     if (!searchQuery) return;
 
+    setLoading(true); // Start loading for search
     try {
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
@@ -176,14 +183,19 @@ export default function Map() {
         const newPosition = [parseFloat(place.lat), parseFloat(place.lon)];
         setPosition(newPosition);
         setPlaceName(place.display_name);
-        fetchAndSetPlaces(newPosition[0], newPosition[1], category);
+        await fetchAndSetPlaces(newPosition[0], newPosition[1], category);
         setLoaded(true);
+        setLoading(false); // End loading after search results are fetched
 
         // ✅ Save searched place to Supabase
         saveLocationToDB(place.display_name);
+      } else {
+        setPlaceName("No results found for your search.");
+        setLoading(false);
       }
     } catch (err) {
       console.error("Search error:", err);
+      setLoading(false); // End loading if there's an error
     }
   };
 
@@ -212,8 +224,10 @@ export default function Map() {
   const navigate = useNavigate();
 
   return (
+    <>
+    {loading && <DreamyLoader />} {/* Conditional rendering of the loader */}
     <div
-      className="relative min-h-screen w-full overflow-hidden bg-cover bg-center"
+      className={`relative min-h-screen w-full overflow-hidden bg-cover bg-center ${loading ? 'hidden' : ''}`} // Hide main content while loading
       style={{ backgroundImage: "url('/src/assets/new post.png')" }}
     >
       <div className="absolute top-4 left-4 z-20" onClick={() => navigate("/post")}>
@@ -308,5 +322,6 @@ export default function Map() {
         </div>
       </div>
     </div>
+    </>
   );
 }

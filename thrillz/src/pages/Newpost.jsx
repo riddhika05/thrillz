@@ -165,7 +165,7 @@ export default function NewPost() {
       </div>
       <header className="text-center mb-6">
         <h1 className="font-bold text-4xl mb-2 text-white">New Whisper</h1>
-        <p className="text-sm opacity-80 text-white font-bold">
+        <p className="text-sm opacity-100 text-white font-bold">
           Location - {currentLocation}
         </p>
       </header>
