@@ -89,7 +89,7 @@ const Chat = () => {
       <div className="max-w-9xl mx-auto  p-4 sm:p-6 md:p-8">
         {/* Sticky header with background and proper z-index */}
 
-        <div className="sticky top-0 pl-5 pr-5 left-0  flex items-center z-20 w-full py-4 bg-gradient-to-r from-pink-100/60 to-purple-100/60 backdrop-blur-md rounded-b-xl shadow-sm mb-4">
+        <div className="sticky top-0 pl-3 pr-3 left-0 flex items-center z-20 w-full py-2 bg-gradient-to-r from-pink-100/60 to-purple-100/60 backdrop-blur-md rounded-b-xl shadow-sm mb-2">
           {/* Profile */}
           <div className="flex justify-between p-4 md:p-6 lg:p-8" onClick={handleBack}>
             <FaArrowLeft className="text-pink-400 text-3xl cursor-pointer" />
@@ -110,7 +110,7 @@ const Chat = () => {
             />
             {/* Explore button */}
             <div
-              className="w-28 h-14 sm:w-36 sm:h-18 md:w-40 md:h-20 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors"
+              className="w-36 h-18 sm:w-32 sm:h-16 md:w-36 md:h-18 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors p-5"
               onClick={handleExploreClick}
             >
               <div className="font-['Pacifico'] font-normal not-italic text-center">
@@ -121,7 +121,7 @@ const Chat = () => {
         </div>
 
         {/* Content Container with increased top margin */}
-        <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full mx-auto mt-6">
+        <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full mx-auto mt-6 overflow-hidden">
           {/* Dynamic Post Card */}
           <div className="mt-4">
             <PostCard />

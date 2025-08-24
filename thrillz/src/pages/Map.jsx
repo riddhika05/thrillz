@@ -2,7 +2,8 @@
 import React from "react";
 import { Heart, Navigation, MapPin, MessageCircle, Music } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 export default function Map() {
   const dots = Array.from({ length: 28 }).map((_, i) => ({
     id: i,
@@ -23,9 +24,19 @@ export default function Map() {
       <span>{children}</span>
     </motion.button>
   );
-
+   const navigate=useNavigate();
+   const handleClick=()=>{
+    navigate("/post");
+   }
   return (
-    <div className="relative min-h-screen w-full overflow-hidden ">
+    <div
+      className="relative min-h-screen w-full overflow-hidden bg-cover bg-center"
+      style={{ backgroundImage: "url('/src/assets/new post.png')" }} // adjust path as needed
+    >
+      <div className="absolute top-4 left-4 z-20" onClick={handleClick}>
+        <FaArrowLeft className="text-pink-300 text-3xl cursor-pointer"/>
+    
+      </div>
       {/* soft vignette */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.12),transparent_60%)]" />
 
@@ -34,7 +45,13 @@ export default function Map() {
         {dots.map((d) => (
           <span
             key={d.id}
-            style={{ top: d.top, left: d.left, width: d.size, height: d.size, opacity: d.opacity }}
+            style={{
+              top: d.top,
+              left: d.left,
+              width: d.size,
+              height: d.size,
+              opacity: d.opacity,
+            }}
             className="absolute rounded-full bg-white"
           />
         ))}
@@ -58,9 +75,13 @@ export default function Map() {
             <button className="p-2 rounded-full bg-white/30 hover:bg-white/50 backdrop-blur-lg shadow-md">
               <Music className="w-5 h-5 text-gray-700" />
             </button>
-             <button className="rounded-full bg-blue-10 shadow-md ">
-    <img src="/src/assets/profile.png" alt="profile" className=" h-full w-full object-cover" />
-  </button>
+            <button className="rounded-full bg-blue-10 shadow-md ">
+              <img
+                src="/src/assets/profile.png"
+                alt="profile"
+                className=" h-full w-full object-cover"
+              />
+            </button>
           </div>
         </div>
       </div>
@@ -83,24 +104,20 @@ export default function Map() {
       {/* bottom action bar */}
       <div className="pointer-events-none absolute inset-x-0 bottom-6 flex w-full justify-center">
         <div className="pointer-events-auto flex items-center gap-6 rounded-3xl border border-white/20 bg-white/15 px-4 py-3 shadow-[0_12px_48px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-          <Button icon={Navigation} className="bg-violet-500/80 hover:bg-violet-500/90">
+          <Button
+            icon={Navigation}
+            className="bg-violet-500/80 hover:bg-violet-500/90"
+          >
             Locate Me
           </Button>
-          <Button icon={MapPin} className="bg-violet-500/80 hover:bg-violet-500/90">
+          <Button
+            icon={MapPin}
+            className="bg-violet-500/80 hover:bg-violet-500/90"
+          >
             Select Location
           </Button>
         </div>
       </div>
-
-      {/* chat bubble */}
-      <motion.button
-        whileHover={{ y: -2 }}
-        whileTap={{ scale: 0.96 }}
-        className="fixed bottom-6 right-6 grid h-14 w-14 place-items-center rounded-2xl border border-white/30 bg-violet-500 text-white shadow-[0_18px_50px_rgba(99,102,241,0.65)]"
-        aria-label="Open chat"
-      >
-        <MessageCircle className="h-6 w-6" />
-      </motion.button>
     </div>
   );
 }
