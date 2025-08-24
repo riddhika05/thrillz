@@ -19,7 +19,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/post' element={<Post />} />
-        <Route path='/map' element={<Map />} />
+        <Route path='/explore' element={<Map />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/edit-profile' element={<EditProfile />} />
         <Route path='/avatar' element={<Avatar />} />

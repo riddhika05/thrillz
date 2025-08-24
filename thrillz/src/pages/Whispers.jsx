@@ -2,6 +2,7 @@ import React from 'react'
 import {supabase} from "../supabaseClient"
 import { useState,useEffect } from 'react'
 import Whisper from "./Whisper"
+import DreamyLoader from '../components/loader'
 const Whispers = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
@@ -26,7 +27,7 @@ const Whispers = () => {
   }, [supabase]); 
 
   if (error) return <div>Error: {error}</div>;
-  if (!whispers.length) return <div>Loading whispers...</div>; //Aaayush ka kaam
+  if (!whispers.length) return <DreamyLoader/>; //Aaayush ka kaam
 
   return (
     <ul style={{ listStyleType: "none" }}>

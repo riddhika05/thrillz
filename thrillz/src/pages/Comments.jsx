@@ -85,7 +85,7 @@ const Chat = () => {
       style={{ backgroundImage: `url(${chatbkg})` }}
     >
       {/* Main Content Wrapper for Responsiveness */}
-      <div className="max-w-8xl mx-auto  p-4 sm:p-6 md:p-8">
+      <div className="max-w-9xl mx-auto  p-4 sm:p-6 md:p-8">
         {/* Sticky header with background and proper z-index */}
 
         <div className="sticky top-0 pl-5 pr-5 left-0  flex items-center z-20 w-full py-4 bg-gradient-to-r from-pink-100/60 to-purple-100/60 backdrop-blur-md rounded-b-xl shadow-sm mb-4">
@@ -120,7 +120,7 @@ const Chat = () => {
         </div>
 
         {/* Content Container with increased top margin */}
-        <div className="max-w-xl mx-auto mt-6">
+        <div className="max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl w-full mx-auto mt-6">
           {/* Dynamic Post Card */}
           <div className="mt-4">
             <PostCard />

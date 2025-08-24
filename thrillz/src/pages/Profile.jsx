@@ -8,7 +8,7 @@ import heartIcon from "../assets/heart.png";
 import commentIcon from "../assets/comment.png";
 import trashIcon from "../assets/Trash.png";
 import { useNavigate } from "react-router-dom";
-
+import DreamyLoader from '../components/loader'
 const Profile = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
@@ -136,7 +136,7 @@ const Profile = () => {
       <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8 mt-4">
         {error && <div className="text-red-500">{error}</div>}
         {whispers.length === 0 && !error && (
-          <div className="text-white">Loading Whispers....</div>
+          <DreamyLoader/>
         )}
         {whispers.map((whisper) => (
           <div
