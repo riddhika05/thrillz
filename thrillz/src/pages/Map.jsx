@@ -12,8 +12,7 @@ import axios from "axios";
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
@@ -33,7 +32,7 @@ const whisperIcon = new L.Icon({
 function MapUpdater({ position }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(position, map.getZoom());
+    map.flyTo(position, 16); // zoom in closer
   }, [map, position]);
   return null;
 }
@@ -81,6 +80,7 @@ export default function Map() {
   const [relevantPlaces, setRelevantPlaces] = useState([]);
   const [whispers, setWhispers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("cafe"); // default dropdown option
 
   const fetchPlaceName = async (lat, lon) => {
     try {
@@ -94,11 +94,11 @@ export default function Map() {
     }
   };
 
-  const fetchAndSetPlaces = async (lat, lon) => {
+  const fetchAndSetPlaces = async (lat, lon, cat = category) => {
     try {
       const query = `
         [out:json];
-        ( node["amenity"="cafe"](around:500,${lat},${lon}); );
+        ( node["amenity"="${cat}"](around:500,${lat},${lon}); );
         out center;
       `;
       const response = await axios.post(
@@ -122,8 +122,8 @@ export default function Map() {
         (pos) => {
           const newPosition = [pos.coords.latitude, pos.coords.longitude];
           setPosition(newPosition);
-          fetchPlaceName(newPosition[0], newPosition[1]); // fetch actual place
-          fetchAndSetPlaces(newPosition[0], newPosition[1]);
+          fetchPlaceName(newPosition[0], newPosition[1]);
+          fetchAndSetPlaces(newPosition[0], newPosition[1], category);
           setLoaded(true);
         },
         (err) => {
@@ -153,13 +153,20 @@ export default function Map() {
         const newPosition = [parseFloat(place.lat), parseFloat(place.lon)];
         setPosition(newPosition);
         setPlaceName(place.display_name);
-        fetchAndSetPlaces(newPosition[0], newPosition[1]);
+        fetchAndSetPlaces(newPosition[0], newPosition[1], category);
         setLoaded(true);
       }
     } catch (err) {
       console.error("Search error:", err);
     }
   };
+
+  // 🔄 Refetch places whenever category changes
+  useEffect(() => {
+    if (loaded) {
+      fetchAndSetPlaces(position[0], position[1], category);
+    }
+  }, [category]);
 
   useEffect(() => {
     locateMe();
@@ -188,26 +195,46 @@ export default function Map() {
         <FaArrowLeft className="text-pink-300 text-3xl cursor-pointer" />
       </div>
 
-      {/* 🔍 Search bar */}
-      <form
-        onSubmit={handleSearch}
-        className="mx-auto mt-6 w-[90%] max-w-2xl flex items-center rounded-full border border-gray-300 bg-white shadow-md px-4 py-2"
-      >
-        <Search className="w-5 h-5 text-gray-500 mr-2" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search for a place..."
-          className="flex-1 outline-none text-gray-700"
-        />
-        <button
-          type="submit"
-          className="ml-3 rounded-full bg-violet-500 text-white px-4 py-2"
+      {/* 🔍 Search bar + Dropdown */}
+      <div className="mx-auto mt-6 w-[90%] max-w-3xl flex flex-col sm:flex-row gap-3">
+        {/* Search Bar */}
+        <form
+          onSubmit={handleSearch}
+          className="flex flex-1 items-center rounded-full border border-gray-300 bg-white shadow-md px-4 py-2"
         >
-          Go
-        </button>
-      </form>
+          <Search className="w-5 h-5 text-gray-500 mr-2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search for a place..."
+            className="flex-1 outline-none text-gray-700"
+          />
+          <button
+            type="submit"
+            className="ml-3 rounded-full bg-violet-500 text-white px-4 py-2"
+          >
+            Go
+          </button>
+        </form>
+
+        {/* Dropdown Filter */}
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="rounded-full border border-gray-300 bg-white shadow-md px-4 py-2 text-gray-700 focus:outline-none"
+        >
+          <option value="cafe">Cafés</option>
+          <option value="restaurant">Restaurants</option>
+          <option value="fast_food">Fast Food</option>
+          <option value="atm">ATMs</option>
+          <option value="hospital">Hospitals</option>
+          <option value="pharmacy">Pharmacies</option>
+          <option value="school">Schools</option>
+          <option value="park">Parks</option>
+          <option value="library">Libraries</option>
+        </select>
+      </div>
 
       {/* Map */}
       <div className="mx-auto mt-6 w-[90%] max-w-5xl">
@@ -215,7 +242,7 @@ export default function Map() {
           {loaded && (
             <MapContainer
               center={position}
-              zoom={14}
+              zoom={16}
               style={{ height: "100%", width: "100%" }}
               className="rounded-[28px]"
             >
@@ -226,10 +253,10 @@ export default function Map() {
                 maxZoom={18}
               />
 
-              {/* ✅ User Location Marker with Place Name */}
+              {/* ✅ User Location Marker */}
               <MyLocationMarker position={position} placeName={placeName} />
 
-              {/* Cafés */}
+              {/* Category-based markers */}
               {relevantPlaces.map((place) => (
                 <Marker key={place.id} position={[place.lat, place.lon]}>
                   <Popup>{place.tags.name}</Popup>
@@ -253,7 +280,7 @@ export default function Map() {
 
       {/* Bottom action bar */}
       <div className="pointer-events-none absolute inset-x-0 bottom-6 flex w-full justify-center">
-        <div className="pointer-events-auto flex items-center gap-6 rounded-3xl border border-white/20 bg-white/15 px-4 py-3 shadow-xl backdrop-blur-xl">
+        <div className="pointer-events-auto flex flex-wrap items-center gap-4 sm:gap-6 rounded-3xl border border-white/20 bg-white/15 px-4 py-3 shadow-xl backdrop-blur-xl">
           <Button
             icon={Navigation}
             onClick={locateMe}
