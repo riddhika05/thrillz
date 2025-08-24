@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Navigation, MapPin, Search } from "lucide-react";
+import { Navigation, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { supabase } from "../supabaseClient";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
@@ -32,12 +33,12 @@ const whisperIcon = new L.Icon({
 function MapUpdater({ position }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(position, 16); // zoom in closer
+    map.flyTo(position, 16);
   }, [map, position]);
   return null;
 }
 
-// ✅ Marker with always-open popup + place name
+// Marker with always-open popup + place name
 function MyLocationMarker({ position, placeName }) {
   const markerRef = useRef(null);
 
@@ -80,20 +81,37 @@ export default function Map() {
   const [relevantPlaces, setRelevantPlaces] = useState([]);
   const [whispers, setWhispers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [category, setCategory] = useState("cafe"); // default dropdown option
+  const [category, setCategory] = useState("cafe");
 
+  // Fetch place name from lat/lon
   const fetchPlaceName = async (lat, lon) => {
     try {
       const response = await axios.get(
         `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`
       );
-      setPlaceName(response.data.display_name);
+      return response.data.display_name;
     } catch (err) {
       console.error("Error fetching place name:", err);
-      setPlaceName("Unknown Location");
+      return "Unknown Location";
     }
   };
 
+  // Save location name in Supabase users table
+  const saveLocationToDB = async (locationName) => {
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .update({ Location: locationName })
+        .eq("id", 3);
+
+      if (error) console.error("Supabase update error:", error);
+      else console.log("✅ Location saved to DB:", data);
+    } catch (err) {
+      console.error("DB save error:", err);
+    }
+  };
+
+  // Fetch nearby category-based places
   const fetchAndSetPlaces = async (lat, lon, cat = category) => {
     try {
       const query = `
@@ -112,19 +130,24 @@ export default function Map() {
       setRelevantPlaces(places);
       setWhispers(generateWhispers(lat, lon));
     } catch (error) {
-      console.error("Error fetching places or whispers:", error);
+      console.error("Error fetching places:", error);
     }
   };
 
+  // Locate user
   const locateMe = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
+        async (pos) => {
           const newPosition = [pos.coords.latitude, pos.coords.longitude];
           setPosition(newPosition);
-          fetchPlaceName(newPosition[0], newPosition[1]);
+          const name = await fetchPlaceName(newPosition[0], newPosition[1]);
+          setPlaceName(name);
           fetchAndSetPlaces(newPosition[0], newPosition[1], category);
           setLoaded(true);
+
+          // ✅ Save to Supabase
+          saveLocationToDB(name);
         },
         (err) => {
           console.error("Geolocation error:", err);
@@ -136,7 +159,7 @@ export default function Map() {
     }
   };
 
-  // 🔍 Search for a place by name
+  // Search bar handler
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!searchQuery) return;
@@ -155,13 +178,15 @@ export default function Map() {
         setPlaceName(place.display_name);
         fetchAndSetPlaces(newPosition[0], newPosition[1], category);
         setLoaded(true);
+
+        // ✅ Save searched place to Supabase
+        saveLocationToDB(place.display_name);
       }
     } catch (err) {
       console.error("Search error:", err);
     }
   };
 
-  // 🔄 Refetch places whenever category changes
   useEffect(() => {
     if (loaded) {
       fetchAndSetPlaces(position[0], position[1], category);
@@ -195,9 +220,8 @@ export default function Map() {
         <FaArrowLeft className="text-pink-300 text-3xl cursor-pointer" />
       </div>
 
-      {/* 🔍 Search bar + Dropdown */}
-      <div className="mx-auto mt-6 w-[90%] max-w-3xl flex flex-col sm:flex-row gap-3">
-        {/* Search Bar */}
+      {/* 🔍 Search + Dropdown */}
+      <div className="mx-auto mt-6 w-[95%] sm:w-[90%] max-w-3xl flex flex-col sm:flex-row gap-3">
         <form
           onSubmit={handleSearch}
           className="flex flex-1 items-center rounded-full border border-gray-300 bg-white shadow-md px-4 py-2"
@@ -218,11 +242,10 @@ export default function Map() {
           </button>
         </form>
 
-        {/* Dropdown Filter */}
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="rounded-full border border-gray-300 bg-white shadow-md px-4 py-2 text-gray-700 focus:outline-none"
+          className="rounded-full border border-gray-300 bg-white shadow-md px-3 py-2 text-gray-700 focus:outline-none text-sm sm:text-base"
         >
           <option value="cafe">Cafés</option>
           <option value="restaurant">Restaurants</option>
@@ -237,8 +260,8 @@ export default function Map() {
       </div>
 
       {/* Map */}
-      <div className="mx-auto mt-6 w-[90%] max-w-5xl">
-        <div className="relative h-[530px] rounded-[28px] shadow-lg overflow-hidden">
+      <div className="mx-auto mt-6 w-[95%] sm:w-[90%] max-w-5xl">
+        <div className="relative h-[50vh] sm:h-[60vh] rounded-[28px] shadow-lg overflow-hidden">
           {loaded && (
             <MapContainer
               center={position}
@@ -252,18 +275,12 @@ export default function Map() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 maxZoom={18}
               />
-
-              {/* ✅ User Location Marker */}
               <MyLocationMarker position={position} placeName={placeName} />
-
-              {/* Category-based markers */}
               {relevantPlaces.map((place) => (
                 <Marker key={place.id} position={[place.lat, place.lon]}>
                   <Popup>{place.tags.name}</Popup>
                 </Marker>
               ))}
-
-              {/* Whispers */}
               {whispers.map((whisper) => (
                 <Marker
                   key={whisper.id}
@@ -287,12 +304,6 @@ export default function Map() {
             className="bg-violet-500/80 hover:bg-violet-500/90"
           >
             Locate Me
-          </Button>
-          <Button
-            icon={MapPin}
-            className="bg-violet-500/80 hover:bg-violet-500/90"
-          >
-            Select Location
           </Button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import backgroundImage from "../assets/new post.png";
 import { FaArrowLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
+import axios from "axios";
 
 export default function NewPost() {
   const [text, setText] = useState("Write your Whisper!");
@@ -14,6 +15,7 @@ export default function NewPost() {
   const [file, setFile] = useState(null);
   const fileInputRef = useRef();
   const textareaRef = useRef(null);
+  const [currentLocation, setCurrentLocation] = useState("Loading location...");
 
   const navigate = useNavigate();
 
@@ -79,6 +81,69 @@ export default function NewPost() {
     }
   };
 
+  // Fetches location from Supabase or geocodes if null
+  useEffect(() => {
+    const fetchLocation = async () => {
+      // 1. Fetch location from Supabase for user with id=3
+      const { data, error } = await supabase
+        .from("users")
+        .select("Location")
+        .eq("id", 3)
+        .single();
+      
+      if (error) {
+        console.error("Error fetching location:", error);
+        setCurrentLocation("Could not fetch location.");
+        return;
+      }
+      
+      const userLocation = data?.Location;
+
+      // 2. If Location is NULL, perform reverse geocoding
+      if (!userLocation) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            async (pos) => {
+              const { latitude, longitude } = pos.coords;
+              try {
+                // Use a reverse geocoding service (Nominatim in this case)
+                const response = await axios.get(
+                  `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                );
+                const fetchedLocationName = response.data.display_name;
+                setCurrentLocation(fetchedLocationName);
+
+                // 3. Update the Location column in Supabase
+                const { error: updateError } = await supabase
+                  .from("users")
+                  .update({ Location: fetchedLocationName })
+                  .eq("id", 3);
+
+                if (updateError) {
+                  console.error("Error updating location:", updateError);
+                }
+              } catch (err) {
+                console.error("Reverse geocoding failed:", err);
+                setCurrentLocation("Location not found.");
+              }
+            },
+            (geoError) => {
+              console.error("Geolocation denied or failed:", geoError);
+              setCurrentLocation("Location access denied or not available.");
+            }
+          );
+        } else {
+          setCurrentLocation("Geolocation not supported by browser.");
+        }
+      } else {
+        // 4. Display the location from Supabase
+        setCurrentLocation(userLocation);
+      }
+    };
+
+    fetchLocation();
+  }, []);
+
   useEffect(() => {
     if (textareaRef.current) {
       const end = textareaRef.current.value.length;
@@ -101,7 +166,7 @@ export default function NewPost() {
       <header className="text-center mb-6">
         <h1 className="font-bold text-4xl mb-2 text-white">New Whisper</h1>
         <p className="text-sm opacity-80 text-white font-bold">
-          location - Near Clock Tower, Jaipur, Rajasthan ,pin-332131
+          Location - {currentLocation}
         </p>
       </header>
       <div className="flex flex-col items-center w-full">
@@ -170,7 +235,7 @@ export default function NewPost() {
             <div
               className={`absolute inset-0 overflow-auto whitespace-pre-wrap p-4 pointer-events-none ${fontSize} ${
                 isBold ? "font-bold" : "font-medium"
-              } ${isItalic ? "italic" : ""} leading-relaxed`}
+              } ${isItalic ? "italic" : ""}`}
               style={{ color: color, lineHeight: "1.5" }}
             >
               {text.split("\n").map((line, idx) => (
