@@ -3,6 +3,7 @@ import girl from "../assets/girl.png";
 import './EditProfile.css';
 import { useNavigate } from 'react-router-dom';
 import { uniqueNamesGenerator, adjectives, animals } from 'unique-names-generator';
+import { supabase } from "../supabaseClient";  
 
 function generateUsername() {
   return uniqueNamesGenerator({
@@ -15,7 +16,7 @@ function generateUsername() {
 
 const EditProfile = () => {
   const [nickname, setNickname] = useState('');
-  const [email, setEmail] = useState('');
+  //const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [triggerWordInput, setTriggerWordInput] = useState('');
   const [triggerWords, setTriggerWords] = useState([]);
@@ -37,14 +38,26 @@ const EditProfile = () => {
 
   const handleToggleProfanity = () => setProfanity(!profanity);
 
-  const handleSave = (e) => {
+  
+  const handleSave = async (e) => {
     e.preventDefault();
-    // Do actual save logic here
-    alert('Changes Saved!');
+
+    try {
+      const { error } = await supabase
+        .from("users")
+        .update({ username: nickname })
+        .eq("id", 3);  // <-- replace with dynamic user id later
+
+      if (error) throw error;
+
+      alert("Nickname updated!");
+    } catch (err) {
+      console.error("Error updating nickname:", err.message);
+      alert("Failed to update nickname");
+    }
   };
 
   const handleLogout = () => {
-    // Implement logout logic
     alert('Logged Out');
   };
 
@@ -55,14 +68,13 @@ const EditProfile = () => {
       setAvatarPreview(url);
     }
   };
-  
-  useEffect(() => {
-  if (!nickname) {
-    setNickname(generateUsername());
-  }
-}, []);
 
-  // cleanup object URL to prevent memory leaks
+  useEffect(() => {
+    if (!nickname) {
+      setNickname(generateUsername());
+    }
+  }, []);
+
   useEffect(() => {
     return () => {
       if (avatarPreview) URL.revokeObjectURL(avatarPreview);
@@ -127,18 +139,6 @@ const EditProfile = () => {
             value={nickname}
             onChange={e => setNickname(e.target.value)}
             placeholder="Enter nickname"
-          />
-        </div>
-
-        <div className="form-row">
-          <label className="edit-label" htmlFor="email">E-mail</label>
-          <input
-            className="edit-input"
-            type="email"
-            id="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Enter e-mail"
           />
         </div>
 
