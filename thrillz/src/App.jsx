@@ -45,7 +45,7 @@ function App() {
       <Routes>
 
         <Route path='/' element={<Home />} />
-        <Route path='/post' element={<Post />} />
+        <Route path='/post' element={<Post audioRef={audioRef}  />} />
         <Route path='/explore' element={<Map />} />
         <Route path='/profile' element={<Profile />} />
         <Route path='/edit-profile' element={<EditProfile />} />
