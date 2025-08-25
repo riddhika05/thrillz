@@ -106,7 +106,6 @@ const Chat = () => {
               src={musicIcon}
               alt="Music"
               className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 cursor-pointer"
-              onClick={handleClickBot}
             />
             <div
               className="w-28 h-10 sm:w-32 sm:h-12 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors p-2"
