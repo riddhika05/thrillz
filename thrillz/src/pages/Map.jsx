@@ -315,7 +315,7 @@ export default function Map() {
           <Button
             icon={Navigation}
             onClick={locateMe}
-            className="bg-violet-500/80 hover:bg-violet-500/90"
+            className="bg-violet-500/90 hover:bg-violet-500/90"
           >
             Locate Me
           </Button>
