@@ -8,8 +8,8 @@ import trashIcon from "../assets/Trash.png";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useWindowSize } from "react-use";
 import Confetti from "react-confetti";
-
-
+import HeartButton from "../components/heart";
+import DreamyLoader from '../components/loader'
 const Follow = () => {
   const [whispers, setWhispers] = useState([]);
   const [error, setError] = useState(null);
@@ -183,7 +183,7 @@ const Follow = () => {
       <div className="flex flex-wrap justify-center gap-4 md:gap-1 lg:gap-4 mt-4">
         {error && <div className="text-red-500">{error}</div>}
         {whispers.length === 0 && !error && (
-          <div className="text-white">Loading Whispers....</div>
+          <DreamyLoader/>
         )}
         {whispers.map((whisper) => (
           <div
@@ -202,13 +202,9 @@ const Follow = () => {
                 />
               </div>
             )}
-            <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
+            <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg overflow-hidden">
               <button className="hover:scale-110 transition-transform">
-                <img
-                  src={heartIcon}
-                  alt="Heart"
-                  className="w-5 h-5 sm:w-6 sm:h-6"
-                />
+                <HeartButton/>
               </button>
               <button
                 onClick={() => handleCommentClick(whisper)}

@@ -4,6 +4,7 @@ import musicIcon from "../assets/music.png";
 import profileAvatar from "../assets/girl.png";
 import chatbkg from "../assets/profile_bkg.png";
 import { FaArrowLeft } from "react-icons/fa";
+
 const Chat = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,7 +38,7 @@ const Chat = () => {
   };
 
   const handleClick = () => navigate("/profile");
-   const handleBack = () => navigate("/post");
+  const handleBack = () => navigate("/post");
   const handleClickBot = () => navigate("/chatbot");
   const handleExploreClick = () => navigate("/explore");
 
@@ -84,32 +85,31 @@ const Chat = () => {
       className="min-h-screen w-full bg-cover bg-no-repeat bg-center bg-fixed m-0"
       style={{ backgroundImage: `url(${chatbkg})` }}
     >
-      {/* Main Content Wrapper for Responsiveness */}
-      <div className="max-w-8xl mx-auto  p-4 sm:p-6 md:p-8">
-        {/* Sticky header with background and proper z-index */}
-
-        <div className="sticky top-0 pl-5 pr-5 left-0  flex items-center z-20 w-full py-4 bg-gradient-to-r from-pink-100/60 to-purple-100/60 backdrop-blur-md rounded-b-xl shadow-sm mb-4">
-          {/* Profile */}
-          <div className="flex justify-between p-4 md:p-6 lg:p-8" onClick={handleBack}>
+      {/* Main Content Wrapper */}
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
+        {/* Header */}
+        <div className="sticky top-0 left-0 flex items-center z-20 w-full py-1 pr-2  bg-gradient-to-r from-pink-100/60 to-purple-100/60 backdrop-blur-md rounded-b-xl shadow-sm mb-2">
+          <div
+            className="flex justify-between p-2 md:p-4 lg:p-6"
+            onClick={handleBack}
+          >
             <FaArrowLeft className="text-pink-400 text-3xl cursor-pointer" />
           </div>
           <img
             src={profileAvatar}
             alt="Profile Avatar"
-            className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-20 lg:w-20 cursor-pointer"
+            className="h-10 w-10 sm:h-12 sm:w-12 md:h-14 md:w-14 cursor-pointer"
             onClick={handleClick}
           />
-          {/* Right side icons */}
-          <div className="ml-auto flex items-center gap-4 sm:gap-6 md:gap-8 lg:gap-10 text-[#5a4fcf]">
+          <div className="ml-auto flex items-center gap-2 sm:gap-4 md:gap-6 lg:gap-8 text-[#5a4fcf]">
             <img
               src={musicIcon}
               alt="Music"
               className="h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 cursor-pointer"
               onClick={handleClickBot}
             />
-            {/* Explore button */}
             <div
-              className="w-28 h-14 sm:w-36 sm:h-18 md:w-40 md:h-20 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors"
+              className="w-28 h-10 sm:w-32 sm:h-12 bg-[#D9D9D9] rounded-[40px] flex items-center justify-center cursor-pointer text-sm sm:text-base shadow-md hover:bg-[#c9c9c9] transition-colors p-2"
               onClick={handleExploreClick}
             >
               <div className="font-['Pacifico'] font-normal not-italic text-center">
@@ -119,9 +119,9 @@ const Chat = () => {
           </div>
         </div>
 
-        {/* Content Container with increased top margin */}
-        <div className="max-w-xl mx-auto mt-6">
-          {/* Dynamic Post Card */}
+        {/* Content Container */}
+        <div className="max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg w-full mx-auto mt-6 overflow-hidden">
+          {/* Post Card */}
           <div className="mt-4">
             <PostCard />
           </div>
@@ -129,12 +129,11 @@ const Chat = () => {
           {/* Comments Section */}
           <div className="w-full mt-6 bg-gray-200/50 backdrop-blur-sm rounded-2xl p-4 shadow-md">
             <h3 className="font-bold text-lg mb-3 text-pink-800">Comments</h3>
-            {/* Scrollable container with max height */}
             <div className="max-h-[30rem] overflow-y-auto pr-2 hide-scrollbar">
               {comments.map((c) => (
                 <div
                   key={c.id}
-                  className="flex items-start gap-3 mb-4 p-2 rounded-lg hover:bg-white/30 transition-colors"
+                  className="flex items-start gap-3 mb-4 p-2 max-w-[85%] mx-auto rounded-lg hover:bg-white/30 transition-colors"
                 >
                   <img
                     src={profileAvatar}

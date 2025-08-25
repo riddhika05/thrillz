@@ -43,17 +43,19 @@ function App() {
       <audio ref={audioRef} src="/lofi2.mp3" loop />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/post" element={<Post audioRef={audioRef}/>} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/avatar" element={<Avatar />} />
-        <Route path="/chatbot" element={<Chatbot />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="/comments" element={<Comments />} />
-        <Route path="/newpost" element={<Newpost />} />
-        <Route path="/follow" element={<Follow />} />
+
+        <Route path='/' element={<Home />} />
+        <Route path='/post' element={<Post />} />
+        <Route path='/explore' element={<Map />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/edit-profile' element={<EditProfile />} />
+        <Route path='/avatar' element={<Avatar />} />
+        <Route path='/chatbot' element={<Chatbot />} />
+        <Route path='/chat' element={<Chat />} />
+        <Route path='/comments' element={<Comments />} />
+        <Route path='/newpost' element={<Newpost />} />
+        <Route path='/follow' element={<Follow />} />
+
       </Routes>
     </Router>
   );

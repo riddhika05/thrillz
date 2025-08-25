@@ -5,7 +5,7 @@ import commentIcon from "../assets/comment.png";
 import trashIcon from "../assets/Trash.png";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-
+import HeartButton from "../components/heart";
 const Whisper = ({ whisper, containerRef }) => {
   const user = whisper.users;
   const ref = useRef(null);
@@ -74,7 +74,7 @@ const Whisper = ({ whisper, containerRef }) => {
       )}
       <div className="flex gap-4 sm:gap-6 md:gap-8 bg-pink-400 rounded-2xl px-4 py-2 sm:px-6 sm:py-3 mt-4 sm:mt-6 justify-center shadow-lg">
         <button className="hover:scale-110 transition-transform">
-          <img src={heartIcon} alt="Heart" className="w-5 h-5 sm:w-6 sm:h-6" />
+          <HeartButton />
         </button>
         <button
           onClick={handleCommentClick}
